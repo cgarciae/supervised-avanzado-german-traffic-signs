@@ -31,14 +31,14 @@ python download_data.py
 Esto descarga los archivos en la carpeta `data`.
 
 ### Preprocesamiento
-Las imágenes del formato original es `.ppm` y las dimensiones de estas varìan. Si deseas convertirlas a `.jpg` y redimensionarlas a `32x32` ejecuta
+Las imágenes del formato original es `.ppm` y las dimensiones de estas varían. Si deseas convertirlas a `.jpg` y redimensionarlas a `32x32` ejecuta
 
 ```bash
 python process_data.py
 ```
 
 # Starter Code Python
-Para iniciar con este reto puedes correr el codigo de Python en Jupyter del archivo `python-sample.ipynb`. Este código que ayudara a cargar y visualizar algunas imágenes. Las dependencias son las mismas que se instalaron durante la descarga de los datos, ver [Requerimientos](#Requerimientos).
+Para iniciar con este reto puedes correr el codigo de Python en Jupyter del archivo `python-sample.ipynb`. Este código que ayudará a cargar y visualizar algunas imágenes. Las dependencias son las mismas que se instalaron durante la descarga de los datos, ver [Requerimientos](#Requerimientos).
 
 Para iniciar el código solo hay que prender Jupyter en esta carpeta
 
