@@ -1,1 +1,6 @@
-cytoolz
+pillow
+scipy
+numpy
+pandas
+jupyter
+matplotlib

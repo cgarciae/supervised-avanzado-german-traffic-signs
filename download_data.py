@@ -42,6 +42,7 @@ print("extracting test-set.zip")
 zip_ref = zipfile.ZipFile("data/test-set.zip", 'r')
 zip_ref.extractall("data/test-set")
 zip_ref.close()
+os.remove("data/test-set/GTSRB/Final_Test/Images/GT-final_test.test.csv")
 
 
 print("downloading GT-final_test.csv.zip")
@@ -55,12 +56,10 @@ zip_ref.extract("GT-final_test.csv", "data/test-set/GTSRB/Final_Test/Images")
 zip_ref.close()
 
 
-
 print("removing files")
 os.remove("data/training-set.zip")
 os.remove("data/test-set.zip")
 os.remove("data/GT-final_test.csv.zip")
-os.remove("data/test-set/GTSRB/Final_Test/Images/GT-final_test.test.csv")
 
 
 print("DONE")

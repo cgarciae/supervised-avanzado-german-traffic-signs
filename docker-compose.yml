@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  python2:
+    build: .
+    volumes:
+      - ./:/code
+    ports:
+      - "8888:8888"
+    working_dir: /code
