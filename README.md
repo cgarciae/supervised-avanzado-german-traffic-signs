@@ -1,10 +1,10 @@
 # Reto German Traffic Signs
-## Descripcion
-El [German Traffic Signs Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=news) es un conjunto de imagenes de señales de transito Alemanas.
+## Description
+El [German Traffic Signs Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=news) es un conjunto de imágenes de señales de tránsito Alemanas.
 
 ![alt text][s1] ![alt text][s2] ![alt text][s3] ![alt text][s4] ![alt text][s5] ![alt text][s6] ![alt text][s7] ![alt text][s8] ![alt text][s9]
 
-Este dataset tiene mas de 50,000 imagenes separadas en 43 clases. El reto es construir un clasificador de imagenes que sea capaz de reconocer estas señales de transito. Adicionalmente, el dataset incluye las posicion (aka bounding boxes) de los objetos dentro de la imagen.
+Este dataset tiene mas de 50,000 imágenes separadas en 43 clases. El reto es construir un clasificador de imágenes que sea capaz de reconocer estas señales de tránsito. Adicionalmente, el dataset incluye las posiciones (aka bounding boxes) de los objetos dentro de la imagen.
 
 ## Getting Started
 Para resolver este reto primero has un fork de este repositorio y clonalo en tu maquina.
@@ -16,12 +16,12 @@ Para descargar y visualizar los datos necesitas Python 2 o 3. Las dependencias l
 * pandas
 * jupyter
 
-Puedes instalarlas facilmente utilizando el commando
+Puedes instalarlas fácilmente utilizando el commando
 
 ```bash
-pip install -r requirements.txt
+sudo pip install -r requirements.txt
 ```
-Dependiendo de tu enterno puede que necesites instalar paquetes del sistema adicionales, si tienes problemas revisa la documentacion de estas librerias.
+Dependiendo de tu entorno puede que necesites instalar paquetes del sistema adicionales, si tienes problemas revisa la documentación de estas librerías.
 
 ### Descarga
 Para descargar los datos ejecuta el comando
@@ -31,16 +31,16 @@ python download_data.py
 Esto descarga los archivos en la carpeta `data`.
 
 ### Preprocesamiento
-Las imagenes del formato original es `.ppm` y las dimensiones de estas varian. Si deseas convertirlas a `.jpg` y redimensionarlas a `32x32` ejecuta
+Las imágenes del formato original es `.ppm` y las dimensiones de estas varìan. Si deseas convertirlas a `.jpg` y redimensionarlas a `32x32` ejecuta
 
 ```bash
 python process_data.py
 ```
 
 # Starter Code Python
-Para iniciar con este reto puedes correr el codigo de Python en Jupyter del archivo `python-sample.ipynb`. Este codigo que ayudara a cargar y visualizar algunas imagenes. Las dependencias son las mismas que se instalaron durante la descarga de los datos, ver [Requerimientos](#Requerimientos).
+Para iniciar con este reto puedes correr el codigo de Python en Jupyter del archivo `python-sample.ipynb`. Este código que ayudara a cargar y visualizar algunas imágenes. Las dependencias son las mismas que se instalaron durante la descarga de los datos, ver [Requerimientos](#Requerimientos).
 
-Para iniciar el codigo solo hay que prender Jupyter en esta carpeta
+Para iniciar el código solo hay que prender Jupyter en esta carpeta
 
 ```bash
 jupyter notebook .
