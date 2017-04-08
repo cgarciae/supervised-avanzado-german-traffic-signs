@@ -7,13 +7,13 @@ El [German Traffic Signs Dataset](http://benchmark.ini.rub.de/?section=gtsrb&sub
 Este dataset tiene mas de 50,000 imágenes separadas en 43 clases. El reto es construir un clasificador de imágenes que sea capaz de reconocer estas señales de tránsito. Adicionalmente, el dataset incluye las posiciones (aka bounding boxes) de los objetos dentro de la imagen.
 
 ### Formato Datos
-*Especifica los archivos que contienen los datos y el formato de estso (csv, txt, etc). IMPORTANTE: Los datos siempre deben estar contenidos en la carpeta `data`, adicionalmente dentro de esta carpeta deben divirse entre las carpetas `training-set` y `test-set`.*
-
+Todos los datos viven en la carpeta `data` y se dividen en 2 grupos
 ```
 |-data
 | |-traning-set
 | |-test-set
 ```
+
 
 ### Variables
 *Describe cada una de las variables de los datos*
@@ -22,7 +22,19 @@ Este dataset tiene mas de 50,000 imágenes separadas en 43 clases. El reto es co
 *Especifica el objetivo del reto y el rol de las variables (e.g cuales son los features y cuales son los labels). IMPORTANTE: se debe especificar que el performance debe ser calculado con respecto a los datos del `test-set` y este no puede ser utilizado para el entrenamiento.*
 
 ### Solucion
-Ver procedimiento de [solucion](https://github.com/colomb-ia/formato-retos#solucion)
+Ver procedimiento de [solucion](https://github.com/colomb-ia/formato-retos#solucion).
+
+##### Requerimientos
+*Indica los requerimientos para utilizar el codigo de tu solucion*
+
+##### Procedimiento
+*Indica el procedimiento que se debe seguir para reproducir tu solucion*
+
+##### Metodo
+*Indica el metodo que utilizaste para solucionar el reto*
+
+##### Resultados
+*Indica el metodo que utilizaste para solucionar el reto*
 
 ### Notas Teoricas
 *Sugiere algunos aspectos teoricos a tener en cuenta.*
