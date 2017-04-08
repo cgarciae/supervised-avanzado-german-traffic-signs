@@ -1,13 +1,39 @@
 # Reto German Traffic Signs
-## Description
+## Descripcion
 El [German Traffic Signs Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=news) es un conjunto de imágenes de señales de tránsito Alemanas.
 
 ![alt text][s1] ![alt text][s2] ![alt text][s3] ![alt text][s4] ![alt text][s5] ![alt text][s6] ![alt text][s7] ![alt text][s8] ![alt text][s9]
 
 Este dataset tiene mas de 50,000 imágenes separadas en 43 clases. El reto es construir un clasificador de imágenes que sea capaz de reconocer estas señales de tránsito. Adicionalmente, el dataset incluye las posiciones (aka bounding boxes) de los objetos dentro de la imagen.
 
+### Formato Datos
+*Especifica los archivos que contienen los datos y el formato de estso (csv, txt, etc). IMPORTANTE: Los datos siempre deben estar contenidos en la carpeta `data`, adicionalmente dentro de esta carpeta deben divirse entre las carpetas `training-set` y `test-set`.*
+
+```
+| data
+| -- traning-set
+| -- test-set
+```
+
+### Variables
+*Describe cada una de las variables de los datos*
+
+### Objetivo
+*Especifica el objetivo del reto y el rol de las variables (e.g cuales son los features y cuales son los labels). IMPORTANTE: se debe especificar que el performance debe ser calculado con respecto a los datos del `test-set` y este no puede ser utilizado para el entrenamiento.*
+
+### Solucion
+Ver procedimiento de [solucion](https://github.com/colomb-ia/formato-retos#solucion)
+
+### Notas Teoricas
+*Sugiere algunos aspectos teoricos a tener en cuenta.*
+
 ## Getting Started
-Para resolver este reto primero has un fork de este repositorio y clonalo en tu maquina.
+Para resolver este reto primero has un [fork](https://help.github.com/articles/fork-a-repo/) de este repositorio y [clona](https://help.github.com/articles/cloning-a-repository/) el fork en tu maquina.
+
+```bash
+git clone https://github.com/{username}/{reto}
+cd {reto}
+```
 
 ### Requerimientos
 Para descargar y visualizar los datos necesitas Python 2 o 3. Las dependencias las puedes encontrar en el archivo `requirements.txt`, el cual incluye
@@ -28,7 +54,7 @@ Para descargar los datos ejecuta el comando
 ```bash
 python download_data.py
 ```
-Esto descarga los archivos en la carpeta `data`.
+Esto descarga los archivos en la carpeta `data`. Los datos se divide en 2 conjuntos: `training-set` y `test-set`, cada conjunto vive dentro de su propia carpeta.
 
 ### Preprocesamiento
 Las imágenes del formato original es `.ppm` y las dimensiones de estas varían. Si deseas convertirlas a `.jpg` y redimensionarlas a `32x32` ejecuta
@@ -46,6 +72,14 @@ Para iniciar el código solo hay que prender Jupyter en esta carpeta
 jupyter notebook .
 ```
 y abrir el archivo `python-sample.ipynb`.
+
+
+# Soluciones
+| Score | Usuario |	Algoritmo | Link Repo |
+| - | - | - | - |
+| *score* | *nombre* | *algoritmo* | *link* |
+
+
 
 [s1]: http://benchmark.ini.rub.de/Images/gtsrb/0.png "S"
 [s2]: http://benchmark.ini.rub.de/Images/gtsrb/1.png "S"
