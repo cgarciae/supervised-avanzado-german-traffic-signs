@@ -31,8 +31,8 @@ Ver procedimiento de [solucion](https://github.com/colomb-ia/formato-retos#soluc
 Para resolver este reto primero has un [fork](https://help.github.com/articles/fork-a-repo/) de este repositorio y [clona](https://help.github.com/articles/cloning-a-repository/) el fork en tu maquina.
 
 ```bash
-git clone https://github.com/{username}/{reto}
-cd {reto}
+git clone https://github.com/{username}/supervised-avanzado-german-traffic-signs
+cd supervised-avanzado-german-traffic-signs
 ```
 
 ### Requerimientos
