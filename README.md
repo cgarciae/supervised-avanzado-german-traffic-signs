@@ -10,9 +10,9 @@ Este dataset tiene mas de 50,000 imágenes separadas en 43 clases. El reto es co
 *Especifica los archivos que contienen los datos y el formato de estso (csv, txt, etc). IMPORTANTE: Los datos siempre deben estar contenidos en la carpeta `data`, adicionalmente dentro de esta carpeta deben divirse entre las carpetas `training-set` y `test-set`.*
 
 ```
-| data
-| -- traning-set
-| -- test-set
+|-data
+| |-traning-set
+| |-test-set
 ```
 
 ### Variables
