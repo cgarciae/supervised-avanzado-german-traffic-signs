@@ -21,8 +21,11 @@ Todos los datos viven en la carpeta `data` y se dividen en 2 grupos
 ### Objetivo
 *Especifica el objetivo del reto y el rol de las variables (e.g cuales son los features y cuales son los labels). IMPORTANTE: se debe especificar que el performance debe ser calculado con respecto a los datos del `test-set` y este no puede ser utilizado para el entrenamiento.*
 
+### Notas Teoricas
+*Sugiere algunos aspectos teoricos a tener en cuenta.*
+
 ### Solucion
-Ver procedimiento de [solucion](https://github.com/colomb-ia/formato-retos#solucion).
+Ver procedimiento de [solucion](https://github.com/colomb-ia/formato-retos#solucion)
 
 ##### Requerimientos
 *Indica los requerimientos para utilizar el codigo de tu solucion*
@@ -35,9 +38,6 @@ Ver procedimiento de [solucion](https://github.com/colomb-ia/formato-retos#soluc
 
 ##### Resultados
 *Indica el metodo que utilizaste para solucionar el reto*
-
-### Notas Teoricas
-*Sugiere algunos aspectos teoricos a tener en cuenta.*
 
 ## Getting Started
 Para resolver este reto primero has un [fork](https://help.github.com/articles/fork-a-repo/) de este repositorio y [clona](https://help.github.com/articles/cloning-a-repository/) el fork en tu maquina.
