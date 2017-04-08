@@ -45,7 +45,7 @@ Para descargar y visualizar los datos necesitas Python 2 o 3. Las dependencias l
 Puedes instalarlas fácilmente utilizando el commando
 
 ```bash
-sudo pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 Dependiendo de tu entorno puede que necesites instalar paquetes del sistema adicionales, si tienes problemas revisa la documentación de estas librerías.
 
