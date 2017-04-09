@@ -32,7 +32,7 @@ Todos los archivos `*.csv` contienen las siguiente variables
 
 | Filename | Width | Height | Roi.X1,  Roi.Y1,  Roi.X2, Roi.Y2 | ClassId |
 | - |  - |  - |  - |  - |
-| Archivo de la imagen es que corresponde esta informacion | Ancho de la imagen | Alto de la imagen | Informacion del bounding box | Numero entero que indica la clase a la que pretenece la imagen |
+| Archivo de la imagen a la que corresponde esta informacion | Ancho de la imagen | Alto de la imagen | Informacion del bounding box | Numero entero que indica la clase a la que pretenece la imagen |
 
 Cada imagen como tal puede ser representada por una matriz 3D de dimensiones `Height x Width x 3` dado que es RGB. Se recomienda redimensionar cada imagen a `32 x 32 x 3`, el script `preprocess_data.py` realiza esta operacion sobre los datos en disco.
 
