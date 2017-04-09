@@ -29,6 +29,7 @@ La carpeta `data/traning-set` esta organizada de la siguiente manera
 
 ### Variables
 Todos los archivos `*.csv` contienen las siguiente variables
+
 | Filename | Width | Height | Roi.X1,  Roi.Y1,  Roi.X2, Roi.Y2 | ClassId |
 | - |  - |  - |  - |  - |
 | Archivo de la imagen es que corresponde esta informacion | Ancho de la imagen | Alto de la imagen | Informacion del bounding box | Numero entero que indica la clase a la que pretenece la imagen |
