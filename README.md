@@ -93,7 +93,7 @@ Dependiendo de tu entorno puede que necesites instalar paquetes del sistema adic
 ### Descarga
 Para descargar los datos ejecuta el comando
 ```bash
-python download_data.py
+dataget load german-traffic-signs
 ```
 Esto descarga los archivos en la carpeta `data`. Los datos se divide en 2 conjuntos: `training-set` y `test-set`, cada conjunto vive dentro de su propia carpeta.
 
@@ -101,7 +101,7 @@ Esto descarga los archivos en la carpeta `data`. Los datos se divide en 2 conjun
 Las imágenes del formato original es `.ppm` y las dimensiones de estas varían. Si deseas convertirlas a `.jpg` y redimensionarlas a `32x32` ejecuta
 
 ```bash
-python process_data.py
+dataget process german-traffic-signs -a dims:32x32 
 ```
 
 # Starter Code Python
