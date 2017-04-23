@@ -7,39 +7,56 @@ El [German Traffic Signs Dataset](http://benchmark.ini.rub.de/?section=gtsrb&sub
 Este dataset tiene mas de 50,000 imágenes separadas en 43 clases. El reto es construir un clasificador de imágenes que sea capaz de reconocer estas señales de tránsito. Adicionalmente, el dataset incluye las posiciones (aka bounding boxes) de los objetos dentro de la imagen.
 
 ### Formato Datos
-Todos los datos viven en la carpeta `data` y se dividen en 2 grupos
+Todos los datos viven en la carpeta `.dataget/data` y se dividen en 2 grupos
 ```
-|-data
-| |-traning-set
-| |-test-set
+|- .dataget
+   |- data
+      |- traning-set
+      |- test-set
 ```
-**Training Set** <br>
-La carpeta `data/traning-set` esta organizada de la siguiente manera
-* En `data/training-set/GTSRB/Final_Training/Images` se encuentran 43 carpeta, desde la carpeta `000000` que hasta la carpeta `000042`, cada una de las carpetas contiene todas las imagenes de una clase.
-* Las imagenes originalmente vienen en el formato `.ppm` y tienen dimensiones variables (ver [descarga](#descarga)), sin embargo, si ejecutas el script `preprocess_data.py` este las transforma a `.jpg` y las redimensiona a `32x32`.  (ver [preprocesamiento](#preprocesamiento)).
-* Dentro de la carpeta de cada clase existe un archivo de la forma `GT-{folder_clase}.csv` que contiene datos de las imagenes en esa clase.
-* El archivo `data/training-set/GTSRB/Readme-Images.txt` contiene informacion adicional sobre el dataset.
+**Estructura** <br>
+Cada sub conjunto de datos (training-set o test-set) tiene la siguiente estructura
+```
+|- {subset}
+   |- {class_id}
+      |- {class_id}.csv
+      |- {image_id}.jpg
+```
+Donde
+* `subset`: unicamente puede ser `training-set` o `test-set`
+* `class_id`: es el identificador de una clase, e.g. 0, 1, 2... 42
+* `image_id`: es el nombre de una imagen.
 
-**Test Set** <br>
-La carpeta `data/traning-set` esta organizada de la siguiente manera
-* En `data/test-set/GTSRB/Final_Test/Images` todas las imagenes del test-set.
-* Las imagenes originalmente vienen en el formato `.ppm` y tienen dimensiones variables (ver [descarga](#descarga)), sin embargo, si ejecutas el script `preprocess_data.py` este las transforma a `.jpg` y las redimensiona a `32x32`.  (ver [preprocesamiento](#preprocesamiento)).
-* Dentro de la carpeta de imagenes existe el archivo `GT-final_test.csv` que contiene los datos de las imagenes.
-* El archivo `data/test-set/GTSRB/Readme-Images-Final-test.txt` contiene informacion adicional sobre el dataset.
+Por ejemplo
+```
+|- training-set
+   |- 0
+      |- 0.csv
+      |- 000000.jpg
+      |- 000001.jpg
+      |- 000002.jpg
+      ...
+   |- 1
+      |- 1.csv
+      |- 000000.jpg
+      |- 000001.jpg
+      |- 000002.jpg
+      ...
+```
+
 
 ### Variables
 Todos los archivos `*.csv` contienen las siguiente variables
 
-| Filename | Width | Height | Roi.X1,  Roi.Y1,  Roi.X2, Roi.Y2 | ClassId |
+| filename | width | height | roi.x1,  roi.y1,  roi.x2, roi.y2 | class_id |
 | - |  - |  - |  - |  - |
 | Archivo de la imagen a la que corresponde esta informacion | Ancho de la imagen | Alto de la imagen | Informacion del bounding box | Numero entero que indica la clase a la que pretenece la imagen |
 
-Cada imagen como tal puede ser representada por una matriz 3D de dimensiones `Height x Width x 3` dado que es RGB. Se recomienda redimensionar cada imagen a `32 x 32 x 3`, el script `preprocess_data.py` realiza esta operacion sobre los datos en disco.
+Cada imagen como tal puede ser representada por una matriz 3D de dimensiones `height x width x 3` dado que es RGB. Se recomienda redimensionar cada imagen a `32 x 32 x 3`.
 
-*Nota: el script `preprocess_data.py` altera las dimensiones de la imagen y los datos de los `.csv` por ahora no son modificados acorde.*
 
 ### Objetivo
-1. Crear un algoritmo que tome una imagen de entrada, ya sea como vector o matriz, y retorne el clase (`ClassId`) a la que pertenece esa imagen.
+1. Crear un algoritmo que tome una imagen de entrada, ya sea como vector o matriz, y retorne el clase (`class_id`) a la que pertenece esa imagen.
 1. Entrenar este algoritmo utilizando los datos de la carpeta `data/training-set`.
 1. Medir el performance/score del algoritmo utilizando los datos de la carpeta `data/test-set`. El performance debe ser medido como
 ```python
@@ -90,18 +107,15 @@ pip install -r requirements.txt
 ```
 Dependiendo de tu entorno puede que necesites instalar paquetes del sistema adicionales, si tienes problemas revisa la documentación de estas librerías.
 
-### Descarga
+### Descarga y Preprocesamiento
 Para descargar los datos ejecuta el comando
 ```bash
-python download_data.py
+dataget get german-traffic-signs
 ```
-Esto descarga los archivos en la carpeta `data`. Los datos se divide en 2 conjuntos: `training-set` y `test-set`, cada conjunto vive dentro de su propia carpeta.
-
-### Preprocesamiento
-Las imágenes del formato original es `.ppm` y las dimensiones de estas varían. Si deseas convertirlas a `.jpg` y redimensionarlas a `32x32` ejecuta
+Esto descarga los archivos en la carpeta `.dataget/data`, los divide en los conjuntos `training-set` y `test-set`, convierte las imagenes en `jpg` de dimensiones `32x32`. Las originalmente vienen en formato `.ppm` y con dimensiones variables. Si deseas mantener el formato original ejecuta en vez
 
 ```bash
-python process_data.py
+dataget get --dont-process german-traffic-signs
 ```
 
 # Starter Code Python
