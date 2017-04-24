@@ -6,7 +6,8 @@ import numpy as np
 from dataget import data # <== dataget
 import tfinterface as ti
 import tensorflow as tf
-
+import cytoolz as cz
+from phi.api import *
 
 from tfinterface.supervised import SupervisedModel
 from tfinterface.supervised import SupervisedTrainer
@@ -19,7 +20,9 @@ dataset = data("german-traffic-signs").get()
 print("loading dataset")
 
 # obtener todas las imagenes (lento)
-features, labels = dataset.training_set.arrays()
+data_generator = dataset.training_set.random_batch_arrays_generator(32)
+data_generator = cz.map(Dict(features = P[0], labels = P[1]), data_generator)
+
 
 print("Features shape: {} \nLabels shape: {}".format(features.shape, labels.shape))
 
@@ -30,13 +33,17 @@ from tfinterface.supervised import SupervisedInputs
 
 def random_shuffle_fns(tensors_dict, **kwargs):
     self = random_shuffle_fns
+
+    self.tensors_dict = tensors_dict
     self.shuffled_tensors = None
+
 
     def shuffle_tensors():
         if self.shuffled_tensors is None:
+            self.tensors_dict = ({key: value for key, value in self.tensors_dict.items() })
 
             self.shuffled_tensors = tf.train.shuffle_batch(
-                tensors_dict,
+                self.tensors_dict,
                 **kwargs
             )
 
@@ -49,7 +56,7 @@ def random_shuffle_fns(tensors_dict, **kwargs):
 
     return ({
         name : get_fn(name)
-        for name, _ in tensors_dict.items()
+        for name in self.tensors_dict
     })
 
 
@@ -77,27 +84,37 @@ class Model(SupervisedModel):
         self.labels = tf.one_hot(self.inputs.labels, n_classes)
 
 
-inputs_fn = SupervisedInputs("inputs", **random_shuffle_fns(dict(
-    features = features,
-    labels = labels
-),
-    batch_size=32,
-    num_threads=4,
-    capacity=50000,
-    min_after_dequeue=10000,
-    enqueue_many=True
-))
-model_fn = Model("conv_net")
-trainer_fn = SupervisedTrainer("trainer", loss="softmax")
+
+from tfinterface.utils import shuffle_batch_tensor_fns
 
 graph = tf.Graph()
 sess = tf.Session(graph=graph)
 
 with graph.as_default(), sess.as_default():
-    inputs = inputs_fn()
-    model = model_fn(inputs)
-    trainer = trainer_fn(model)
+    # inputs_fn = SupervisedInputs("inputs", **shuffle_batch_tensor_fns(dict(
+    #     features = tf.convert_to_tensor(features, dtype=tf.float32),
+    #     labels = tf.convert_to_tensor(labels, dtype=tf.uint8)
+    # ),
+    #     batch_size=32,
+    #     capacity=50000,
+    #     enqueue_many=True,
+    #     min_after_dequeue=10,
+    #     num_threads=4
+    # ))
+    inputs_fn = SupervisedInputs("inputs",
+        features = dict(shape = (None, 32, 32, 3)),
+        labels = dict(shape = (None,), dtype = tf.uint8)
+    )
+    model_fn = Model("conv_net")
+    trainer_fn = SupervisedTrainer("trainer", loss="softmax")
 
 
+inputs = inputs_fn()
+model = model_fn(inputs)
+trainer = trainer_fn(model)
+
+tf.train.start_queue_runners(sess=sess)
 model.initialize()
-trainer.fit()
+
+
+trainer.fit(data_generator=data_generator)
