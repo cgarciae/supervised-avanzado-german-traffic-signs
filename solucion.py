@@ -24,7 +24,7 @@ data_generator = dataset.training_set.random_batch_arrays_generator(32)
 data_generator = cz.map(Dict(features = P[0], labels = P[1]), data_generator)
 
 
-print("Features shape: {} \nLabels shape: {}".format(features.shape, labels.shape))
+# print("Features shape: {} \nLabels shape: {}".format(features.shape, labels.shape))
 
 
 ###########
