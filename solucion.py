@@ -1,6 +1,5 @@
 from scipy.misc import imread
 import os
-import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from dataget import data # <== dataget
@@ -24,41 +23,14 @@ data_generator = dataset.training_set.random_batch_arrays_generator(32)
 data_generator = cz.map(Dict(features = P[0], labels = P[1]), data_generator)
 
 
+
+
 # print("Features shape: {} \nLabels shape: {}".format(features.shape, labels.shape))
 
 
 ###########
 
 from tfinterface.supervised import SupervisedInputs
-
-def random_shuffle_fns(tensors_dict, **kwargs):
-    self = random_shuffle_fns
-
-    self.tensors_dict = tensors_dict
-    self.shuffled_tensors = None
-
-
-    def shuffle_tensors():
-        if self.shuffled_tensors is None:
-            self.tensors_dict = ({key: value for key, value in self.tensors_dict.items() })
-
-            self.shuffled_tensors = tf.train.shuffle_batch(
-                self.tensors_dict,
-                **kwargs
-            )
-
-    def get_fn(name):
-        def tensor_fn():
-            shuffle_tensors()
-            return self.shuffled_tensors[name]
-
-        return tensor_fn
-
-    return ({
-        name : get_fn(name)
-        for name in self.tensors_dict
-    })
-
 
 
 #########
@@ -91,30 +63,34 @@ graph = tf.Graph()
 sess = tf.Session(graph=graph)
 
 with graph.as_default(), sess.as_default():
-    # inputs_fn = SupervisedInputs("inputs", **shuffle_batch_tensor_fns(dict(
-    #     features = tf.convert_to_tensor(features, dtype=tf.float32),
-    #     labels = tf.convert_to_tensor(labels, dtype=tf.uint8)
-    # ),
-    #     batch_size=32,
-    #     capacity=50000,
-    #     enqueue_many=True,
-    #     min_after_dequeue=10,
-    #     num_threads=4
-    # ))
     inputs_fn = SupervisedInputs("inputs",
         features = dict(shape = (None, 32, 32, 3)),
         labels = dict(shape = (None,), dtype = tf.uint8)
     )
-    model_fn = Model("conv_net")
-    trainer_fn = SupervisedTrainer("trainer", loss="softmax")
+    model_fn = Model("conv_net", loss="softmax")
 
 
+
+# build
 inputs = inputs_fn()
 model = model_fn(inputs)
-trainer = trainer_fn(model)
 
+# init
 tf.train.start_queue_runners(sess=sess)
 model.initialize()
 
+# fit
+model.fit(data_generator=data_generator)
 
-trainer.fit(data_generator=data_generator)
+
+### test
+features_test, labels_test = dataset.test_set.arrays()
+inputs_test = inputs_fn(
+    features = features_test,
+    labels = labels_test
+)
+model_test = model_fn(inputs_test)
+
+
+test_score = model_test.score()
+print("test score: {}".format(test_score))
