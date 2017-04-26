@@ -58,8 +58,8 @@ class Model(SupervisedModel):
 mode = sys.argv[1] if len(sys.argv) > 1 else "train"
 
 # from tfinterface.utils import shuffle_batch_tensor_fns
-model_fn = Model("conv_net", loss="softmax", graph=tf.Graph())
-
+model_fn = Model("conv_net", loss="softmax", graph=tf.Graph(), model_path = os.path.join(os.getcwd(), "model")
+)
 
 if mode == "train":
 
@@ -74,14 +74,14 @@ if mode == "train":
     model.initialize()
 
     # fit
-    model.fit(data_generator=data_generator, epochs=100)
+    model.fit(data_generator=data_generator, epochs=1500)
 
-    model.save(model_path = "model.ckpt")
+    model.save()
 
 elif mode == "test":
     ### test
-    features_test, labels_test = dataset.test_set.arrays()
-    features_test, labels_test = next(dataset.test_set.random_batch_arrays_generator(32))
+    # features_test, labels_test = dataset.test_set.arrays()
+    features_test, labels_test = next(dataset.test_set.random_batch_arrays_generator(2000))
 
 
     model_test = model_fn(inputs=dict(
@@ -89,7 +89,7 @@ elif mode == "test":
         labels = labels_test
     ))
     import os
-    model_test.initialize(restore = True, model_path = os.path.join(os.getcwd(), "model.ckpt"))
+    model_test.initialize(restore = True)
 
     test_score = model_test.score()
     print("test score: {}".format(test_score))
