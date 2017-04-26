@@ -7,6 +7,7 @@ import tfinterface as ti
 import tensorflow as tf
 import cytoolz as cz
 from phi.api import *
+import sys
 
 from tfinterface.supervised import SupervisedModel
 from tfinterface.supervised import SupervisedTrainer
@@ -22,9 +23,6 @@ print("loading dataset")
 data_generator = dataset.training_set.random_batch_arrays_generator(32)
 data_generator = cz.map(Dict(features = P[0], labels = P[1]), data_generator)
 
-
-
-
 # print("Features shape: {} \nLabels shape: {}".format(features.shape, labels.shape))
 
 
@@ -37,14 +35,14 @@ from tfinterface.supervised import SupervisedInputs
 
 class Model(SupervisedModel):
 
-    def _build(self, inputs):
-        self.inputs = inputs
+    def _build(self):
 
         n_classes = 43
 
-        net = tf.cast(inputs.features, tf.float32, "cast")
+        net = tf.cast(self.inputs.features, tf.float32, "cast")
+
         net = tf.layers.conv2d(net, 16, [3, 3], activation=tf.nn.elu, name="elu_1")
-        net = tf.layers.max_pooling2d(net, 2, 1)
+        net = tf.layers.max_pooling2d(net, pool_size=2, strides=1)
         net = tf.layers.conv2d(net, 32, [3, 3], activation=tf.nn.elu, name="elu_2")
 
         net = tf.contrib.layers.flatten(net)
@@ -57,40 +55,41 @@ class Model(SupervisedModel):
 
 
 
-from tfinterface.utils import shuffle_batch_tensor_fns
+mode = sys.argv[1] if len(sys.argv) > 1 else "train"
 
-graph = tf.Graph()
-sess = tf.Session(graph=graph)
+# from tfinterface.utils import shuffle_batch_tensor_fns
+model_fn = Model("conv_net", loss="softmax", graph=tf.Graph())
 
-with graph.as_default(), sess.as_default():
-    inputs_fn = SupervisedInputs("inputs",
+
+if mode == "train":
+
+    # build
+    model = model_fn(inputs=dict(
         features = dict(shape = (None, 32, 32, 3)),
         labels = dict(shape = (None,), dtype = tf.uint8)
-    )
-    model_fn = Model("conv_net", loss="softmax")
+    ))
+
+    # init
+    # tf.train.start_queue_runners(sess=sess)
+    model.initialize()
+
+    # fit
+    model.fit(data_generator=data_generator, epochs=100)
+
+    model.save(model_path = "model.ckpt")
+
+elif mode == "test":
+    ### test
+    features_test, labels_test = dataset.test_set.arrays()
+    features_test, labels_test = next(dataset.test_set.random_batch_arrays_generator(32))
 
 
+    model_test = model_fn(inputs=dict(
+        features = features_test,
+        labels = labels_test
+    ))
+    import os
+    model_test.initialize(restore = True, model_path = os.path.join(os.getcwd(), "model.ckpt"))
 
-# build
-inputs = inputs_fn()
-model = model_fn(inputs)
-
-# init
-tf.train.start_queue_runners(sess=sess)
-model.initialize()
-
-# fit
-model.fit(data_generator=data_generator)
-
-
-### test
-features_test, labels_test = dataset.test_set.arrays()
-inputs_test = inputs_fn(
-    features = features_test,
-    labels = labels_test
-)
-model_test = model_fn(inputs_test)
-
-
-test_score = model_test.score()
-print("test score: {}".format(test_score))
+    test_score = model_test.score()
+    print("test score: {}".format(test_score))
