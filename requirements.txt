@@ -4,4 +4,5 @@ numpy
 pandas
 jupyter
 matplotlib
-git+https://github.com/cgarciae/dataget.git@develop
+dataget==0.1.4
+tfinterface==0.0.2

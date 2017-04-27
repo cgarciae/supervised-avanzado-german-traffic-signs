@@ -18,11 +18,15 @@ dataset = data("german-traffic-signs").get()
 data_generator = dataset.training_set.random_batch_arrays_generator(32)
 data_generator = cz.map(Dict(features = P[0], labels = P[1]), data_generator)
 
+graph = tf.Graph()
+sess = tf.Session(graph=graph)
+
 # create model template
 template = Model(
     n_classes = 43,
     name = "basic-conv-net.tf",
-    graph = tf.Graph(),
+    graph = graph,
+    sess = sess,
     seed = seed,
     inputs = dict(
         features = dict(shape = (None, 32, 32, 3)),
@@ -30,8 +34,9 @@ template = Model(
     )
 )
 
-# create model
-model = template()
+with graph.as_default(), tf.device("/cpu:0"):
+    # create model
+    model = template()
 
 # initialize variables
 model.initialize()

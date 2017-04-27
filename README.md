@@ -6,54 +6,6 @@ El [German Traffic Signs Dataset](http://benchmark.ini.rub.de/?section=gtsrb&sub
 
 Este dataset tiene mas de 50,000 imágenes separadas en 43 clases. El reto es construir un clasificador de imágenes que sea capaz de reconocer estas señales de tránsito. Adicionalmente, el dataset incluye las posiciones (aka bounding boxes) de los objetos dentro de la imagen.
 
-### Formato Datos
-Todos los datos viven en la carpeta `.dataget/data` y se dividen en 2 grupos
-```
-|- .dataget
-   |- data
-      |- traning-set
-      |- test-set
-```
-**Estructura** <br>
-Cada sub conjunto de datos (training-set o test-set) tiene la siguiente estructura
-```
-|- {subset}
-   |- {class_id}
-      |- {class_id}.csv
-      |- {image_id}.jpg
-```
-Donde
-* `subset`: unicamente puede ser `training-set` o `test-set`
-* `class_id`: es el identificador de una clase, e.g. 0, 1, 2... 42
-* `image_id`: es el nombre de una imagen.
-
-Por ejemplo
-```
-|- training-set
-   |- 0
-      |- 0.csv
-      |- 000000.jpg
-      |- 000001.jpg
-      |- 000002.jpg
-      ...
-   |- 1
-      |- 1.csv
-      |- 000000.jpg
-      |- 000001.jpg
-      |- 000002.jpg
-      ...
-```
-
-
-### Variables
-Todos los archivos `*.csv` contienen las siguiente variables
-
-| filename | width | height | roi.x1,  roi.y1,  roi.x2, roi.y2 | class_id |
-| - |  - |  - |  - |  - |
-| Archivo de la imagen a la que corresponde esta informacion | Ancho de la imagen | Alto de la imagen | Informacion del bounding box | Numero entero que indica la clase a la que pretenece la imagen |
-
-Cada imagen como tal puede ser representada por una matriz 3D de dimensiones `height x width x 3` dado que es RGB. Se recomienda redimensionar cada imagen a `32 x 32 x 3`.
-
 
 ### Objetivo
 1. Crear un algoritmo que tome una imagen de entrada, ya sea como vector o matriz, y retorne el clase (`class_id`) a la que pertenece esa imagen.
@@ -64,43 +16,8 @@ score = n_aciertos / n_imagenes * 100
 ```
 donde `n_aciertos` es el numero de imagenes clasificadas de forma correcta y `n_imagenes` es el numero total de imagenes en el `test-set`.
 
-### Notas Teoricas
-* Dado que las imagenes son conjuntos con dimensiones muy altas, usualmente la mejor manera de atacar el problema es utilizando [redes neuronales](https://en.wikipedia.org/wiki/Artificial_neural_network).
-  * Para imagenes es recomendable utilizar redes [convolucionales](http://cs231n.github.io/convolutional-networks/).
-
-### Solucion
-Ver procedimiento de [solucion](https://github.com/colomb-ia/formato-retos#solucion).
-
-##### Requerimientos
-*Indica los requerimientos para utilizar el codigo de tu solucion.*
-
-##### Procedimiento
-*Indica el procedimiento que se debe seguir para reproducir tu solucion.*
-
-##### Metodo
-*Indica el metodo que utilizaste para solucionar el reto.*
-
-##### Resultados
-*Indica el metodo que utilizaste para solucionar el reto.*
-
-## Getting Started
-Para resolver este reto primero has un [fork](https://help.github.com/articles/fork-a-repo/) de este repositorio y [clona](https://help.github.com/articles/cloning-a-repository/) el fork en tu maquina.
-
-```bash
-git clone https://github.com/{username}/supervised-avanzado-german-traffic-signs
-cd supervised-avanzado-german-traffic-signs
-```
-
-*Nota: reemplaza `{username}` con tu nombre de usuario de Github.*
-
 ### Requerimientos
-Para descargar y visualizar los datos necesitas Python 2 o 3. Las dependencias las puedes encontrar en el archivo `requirements.txt`, el cual incluye
-* pillow
-* numpy
-* pandas
-* jupyter
-
-Puedes instalarlas fácilmente utilizando el commando
+Puedes instalar los requirementos fácilmente utilizando el commando
 
 ```bash
 pip install -r requirements.txt
@@ -118,21 +35,51 @@ Esto descarga los archivos en la carpeta `.dataget/data`, los divide en los conj
 dataget get --dont-process german-traffic-signs
 ```
 
-# Starter Code Python
-Para iniciar con este reto puedes correr el codigo de Python en Jupyter del archivo `python-sample.ipynb`. Este código que ayudará a cargar y visualizar algunas imágenes. Las dependencias son las mismas que se instalaron durante la descarga de los datos, ver [Requerimientos](#requerimientos).
+### Metodo
+##### Modelo
+Se utilizo una Red Neuronal Convolucional pequeña con la siguiente arquitectura:
 
-Para iniciar el código solo hay que prender Jupyter en esta carpeta
+* Inputs: 3 filtros (RGB)
+* Capa Convolucional 1: 16 filtros, kernel 3x3, funcion de activacion ELU
+* Max Pool: kernel 2x2
+* Capa Convolucional 2: 32 filtros, kernel 3x3, funcion de activacion ELU
+* Flatten: se aplana de matriz a vector
+* Capa Densa: 256 neuronas, activacion ELU
+* Capa Densa Output: 32 neuronal, activacion softmax
 
-```bash
-jupyter notebook .
+##### Entrenamiento
+Se utilizo un Stocastic Gradient Descent con los siguente parametros
+
+* Optimizador: ADAM
+* Learning Rate: 0.001
+* Batch Size: 32
+
+##### Notas
+No se intento optimizar el modelo de ninguna manera, en especial:
+
+* No se utilizo busqueda de hiperparametros
+* No se utilizo ningun metodo de regularizacion
+* No se preprocesaron los datos de ninguna manera excepto estandarizar su tamaño de las imagenes a `32x32`
+
+### Procedimiento
+El modelo se encuentra en el archivo `model.py`. Para entrenarlo ejecuta el comando
 ```
-y abrir el archivo `python-sample.ipynb`.
+python train.py
+```
+Este script corre realiza lo siguiente
 
+* Corre el modelo en la GPU
+* Utiliza `seed = 32` para controlar la aleatoreidad y que los resultados sean reproducibles
+* Entrena el modelo por `1000` iteraciones
+* Graba el modelo en los archivos `basic-conv-net.tf.*`
 
-# Soluciones
-| Score | Usuario |	Algoritmo | Link Repo |
-| - | - | - | - |
-| *score* | *nombre* | *algoritmo* | *link* |
+### Resultados
+Ver el score final ejecuta
+```
+python test.py
+```
+
+Resultado: 0.787490129471
 
 
 

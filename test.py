@@ -16,9 +16,12 @@ dataset = data("german-traffic-signs").get()
 
 # obtener imagenes
 print("loading data")
-features_test, labels_test = next(dataset.test_set.random_batch_arrays_generator(2000))
+features_test, labels_test = dataset.test_set.arrays()
+# features_test, labels_test = next(dataset.test_set.random_batch_arrays_generator(2000))
 
-sess = tf.Session(graph=tf.Graph())
+graph = tf.Graph()
+sess = tf.Session(graph=graph)
+
 
 # create model template
 template = Model(
@@ -33,8 +36,9 @@ template = Model(
     )
 )
 
-# model
-model = template()
+with graph.as_default(), tf.device("/cpu:0"):
+    # model
+    model = template()
 
 # restore
 print("restoring model")
