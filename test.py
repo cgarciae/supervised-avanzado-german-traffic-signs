@@ -18,11 +18,14 @@ dataset = data("german-traffic-signs").get()
 print("loading data")
 features_test, labels_test = next(dataset.test_set.random_batch_arrays_generator(2000))
 
+sess = tf.Session(graph=tf.Graph())
+
 # create model template
 template = Model(
     n_classes = 43,
     name = "basic-conv-net.tf",
-    graph = tf.Graph(),
+    graph = graph,
+    sess = sess,
     seed = seed,
     inputs = dict(
         features = features_test,
