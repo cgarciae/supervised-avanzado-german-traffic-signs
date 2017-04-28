@@ -132,7 +132,7 @@ y abrir el archivo `python-sample.ipynb`.
 # Soluciones
 | Score | Usuario |	Algoritmo | Link Repo |
 | - | - | - | - |
-| *score* | *nombre* | *algoritmo* | *link* |
+| 0.787490129471 | [cgarciae](https://github.com/cgarciae) | Conv Net Pequeña | [repo](https://github.com/cgarciae/supervised-avanzado-german-traffic-signs/tree/feature/solucion-basica) |
 
 
 
