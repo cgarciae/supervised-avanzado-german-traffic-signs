@@ -1,10 +1,5 @@
 # custom
 .dataget
-*.ckpt.*
-*.model
-*.meta
-*.tf.*
-checkpoint
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

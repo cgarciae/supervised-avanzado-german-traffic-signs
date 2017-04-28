@@ -43,7 +43,7 @@ Se utilizo una Red Neuronal Convolucional pequeña con la siguiente arquitectura
 * Capa Convolucional 1: 16 filtros, kernel 3x3, funcion de activacion ELU
 * Max Pool: kernel 2x2
 * Capa Convolucional 2: 32 filtros, kernel 3x3, funcion de activacion ELU
-* Flatten: se aplana de matriz a vector
+* Flatten: se aplana a vector
 * Capa Densa: 256 neuronas, activacion ELU
 * Capa Densa Output: 32 neuronal, activacion softmax
 
@@ -74,13 +74,12 @@ Este script corre realiza lo siguiente
 * Graba el modelo en los archivos `basic-conv-net.tf.*`
 
 ### Resultados
-Ver el score final ejecuta
+Ver el score del `test-set` ejecuta
 ```
 python test.py
 ```
 
-Resultado: 0.787490129471
-
+Resultado: **0.787490129471**
 
 
 [s1]: http://benchmark.ini.rub.de/Images/gtsrb/0.png "S"

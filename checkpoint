@@ -1,0 +1,2 @@
+model_checkpoint_path: "/data/cristian/german-traffic-signs/basic-conv-net.tf"
+all_model_checkpoint_paths: "/data/cristian/german-traffic-signs/basic-conv-net.tf"
