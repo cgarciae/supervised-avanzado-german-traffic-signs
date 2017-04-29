@@ -68,10 +68,12 @@ python train.py
 ```
 Este script corre realiza lo siguiente
 
-* Corre el modelo en la GPU
+* Corre el modelo en la CPU
 * Utiliza `seed = 32` para controlar la aleatoreidad y que los resultados sean reproducibles
 * Entrena el modelo por `1000` iteraciones
 * Graba el modelo en los archivos `basic-conv-net.tf.*`
+
+**Nota:** Los archivos `basic-conv-net.tf.*` del modelo ya vienen el el repositorio, por lo tanto no es del todo necesario ejecutar el script de entrenamiento.
 
 ### Resultados
 Ver el score del `test-set` ejecuta
@@ -80,6 +82,14 @@ python test.py
 ```
 
 Resultado: **0.787490129471**
+
+
+### Visualizacion
+El cuaderno de jupyter `solucion.ipynb` incluye visualizaciones de algunos resultados, para verlo ejecuta el comando
+```bash
+jupyter notebook .
+```
+y abrelo desde el explorador de archivos de jupyter.
 
 
 [s1]: http://benchmark.ini.rub.de/Images/gtsrb/0.png "S"
