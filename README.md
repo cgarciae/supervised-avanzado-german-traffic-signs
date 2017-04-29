@@ -6,6 +6,9 @@ El [German Traffic Signs Dataset](http://benchmark.ini.rub.de/?section=gtsrb&sub
 
 Este dataset tiene mas de 50,000 imágenes separadas en 43 clases. El reto es construir un clasificador de imágenes que sea capaz de reconocer estas señales de tránsito. Adicionalmente, el dataset incluye las posiciones (aka bounding boxes) de los objetos dentro de la imagen.
 
+### Ranking
+Ver [ranking](https://github.com/colomb-ia/supervised-avanzado-german-traffic-signs/blob/master/soluciones.md).
+
 ### Formato Datos
 Todos los datos viven en la carpeta `.dataget/data` y se dividen en 2 grupos
 ```
