@@ -129,12 +129,6 @@ jupyter notebook .
 y abrir el archivo `python-sample.ipynb`.
 
 
-# Soluciones
-| Score | Usuario |	Algoritmo | Link Repo |
-| - | - | - | - |
-| 0.787490129471 | [cgarciae](https://github.com/cgarciae) | Conv Net Pequeña | [repo](https://github.com/cgarciae/supervised-avanzado-german-traffic-signs/tree/feature/solucion-basica) |
-
-
 
 [s1]: http://benchmark.ini.rub.de/Images/gtsrb/0.png "S"
 [s2]: http://benchmark.ini.rub.de/Images/gtsrb/1.png "S"
