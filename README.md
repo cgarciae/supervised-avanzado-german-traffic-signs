@@ -14,8 +14,9 @@ Todos los datos viven en la carpeta `.dataget/data` y se dividen en 2 grupos
 ```
 |- .dataget
    |- data
-      |- traning-set
-      |- test-set
+      |- german-traffic-signs
+         |- traning-set
+         |- test-set
 ```
 **Estructura** <br>
 Cada sub conjunto de datos (training-set o test-set) tiene la siguiente estructura
