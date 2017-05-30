@@ -4,5 +4,5 @@ numpy
 pandas
 jupyter
 matplotlib
-dataget==0.1.4
-tfinterface==0.0.2
+dataget
+tfinterface>=0.0.2
