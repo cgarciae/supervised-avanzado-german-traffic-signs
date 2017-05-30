@@ -108,6 +108,7 @@ Puedes instalarlas fácilmente utilizando el commando
 
 ```bash
 pip install -r requirements.txt
+pip install $(dataget reqs german-traffic-signs)
 ```
 Dependiendo de tu entorno puede que necesites instalar paquetes del sistema adicionales, si tienes problemas revisa la documentación de estas librerías.
 
