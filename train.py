@@ -43,7 +43,12 @@ model.initialize()
 
 # fit
 print("training")
-model.fit(data_generator=data_generator, epochs=1000)
+model.fit(
+    data_generator = data_generator,
+    epochs = 1000,
+    log_summaries = True,
+    # print_test_info = True
+)
 
 # save
 print("saving model")
