@@ -5,6 +5,7 @@ from phi.api import *
 from model import Model
 import numpy as np
 import random
+from name import network_name
 
 # seed: resultados repetibles
 seed = 32
@@ -24,19 +25,19 @@ sess = tf.Session(graph=graph)
 # create model template
 template = Model(
     n_classes = 43,
-    name = "basic-conv-net.tf",
+    name = network_name,
     graph = graph,
     sess = sess,
     seed = seed,
+    optimizer = tf.train.AdamOptimizer,
     inputs = dict(
         features = dict(shape = (None, 32, 32, 3)),
         labels = dict(shape = (None,), dtype = tf.uint8)
     )
 )
 
-with graph.as_default(), tf.device("/cpu:0"):
-    # create model
-    model = template()
+# model
+model = template()
 
 # initialize variables
 model.initialize()
@@ -45,8 +46,9 @@ model.initialize()
 print("training")
 model.fit(
     data_generator = data_generator,
-    epochs = 1000,
+    epochs = 4000,
     log_summaries = True,
+    log_interval = 10,
     # print_test_info = True
 )
 
