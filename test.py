@@ -5,7 +5,7 @@ from phi.api import *
 from model import Model
 import numpy as np
 import random
-from name import network_name
+from name import network_name, model_path
 
 # seed: resultados repetibles
 seed = 32
