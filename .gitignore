@@ -1,7 +1,7 @@
 # custom
 .dataget
 logs
-*.tf*
+models
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
