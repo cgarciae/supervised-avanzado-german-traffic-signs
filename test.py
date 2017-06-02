@@ -33,6 +33,7 @@ inputs = dict(
 template = Model(
     n_classes = 43,
     name = network_name,
+    model_path = model_path,
     graph = graph,
     sess = sess,
     seed = seed,
