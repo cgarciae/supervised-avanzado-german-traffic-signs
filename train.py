@@ -5,7 +5,7 @@ from phi.api import *
 from model import Model
 import numpy as np
 import random
-from name import name
+from name import network_name, model_path
 
 # seed: resultados repetibles
 seed = 32
@@ -22,22 +22,25 @@ data_generator = cz.map(Dict(features = P[0], labels = P[1]), data_generator)
 graph = tf.Graph()
 sess = tf.Session(graph=graph)
 
+# inputs
+inputs = dict(
+    features = dict(shape = (None, 32, 32, 3)),
+    labels = dict(shape = (None,), dtype = tf.uint8)
+)
+
 # create model template
 template = Model(
     n_classes = 43,
-    name = "basic-conv-net.tf",
+    name = network_name,
+    model_path = model_path,
     graph = graph,
     sess = sess,
     seed = seed,
-    inputs = dict(
-        features = dict(shape = (None, 32, 32, 3)),
-        labels = dict(shape = (None,), dtype = tf.uint8)
-    )
 )
 
-with graph.as_default(), tf.device("/cpu:0"):
+with tf.device("/cpu:0"):
     # create model
-    model = template()
+    model = template(inputs)
 
 # initialize variables
 model.initialize()

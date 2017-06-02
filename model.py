@@ -1,19 +1,19 @@
-from tfinterface.supervised import SupervisedModel
+from tfinterface.supervised import SoftmaxClassifier
 import tensorflow as tf
 
-class Model(SupervisedModel):
+class Model(SoftmaxClassifier):
 
     def __init__(self, n_classes, *args, **kwargs):
-        kwargs["loss"] = "softmax"
         self.n_classes = n_classes
 
         super(Model, self).__init__(*args, **kwargs)
 
 
-    def _build(self):
+    def get_labels(self):
         # one hot labels
-        self.labels = tf.one_hot(self.inputs.labels, self.n_classes)
+        return tf.one_hot(self.inputs.labels, self.n_classes)
 
+    def get_logits(self):
         # cast
         net = tf.cast(self.inputs.features, tf.float32, "cast")
 
@@ -29,5 +29,4 @@ class Model(SupervisedModel):
         net = tf.layers.dense(net, 256, activation=tf.nn.elu)
 
         # output layer
-        self.logits = tf.layers.dense(net, self.n_classes)
-        self.predictions = tf.nn.softmax(self.logits)
+        return tf.layers.dense(net, self.n_classes)

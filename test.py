@@ -5,6 +5,7 @@ from phi.api import *
 from model import Model
 import numpy as np
 import random
+from name import network_name, model_path
 
 # seed: resultados repetibles
 seed = 32
@@ -22,23 +23,25 @@ features_test, labels_test = dataset.test_set.arrays()
 graph = tf.Graph()
 sess = tf.Session(graph=graph)
 
+# inputs
+inputs = dict(
+    features = features_test,
+    labels = labels_test
+)
 
 # create model template
 template = Model(
     n_classes = 43,
-    name = "basic-conv-net.tf",
+    name = network_name,
+    model_path = model_path,
     graph = graph,
     sess = sess,
     seed = seed,
-    inputs = dict(
-        features = features_test,
-        labels = labels_test
-    )
 )
 
-with graph.as_default(), tf.device("/cpu:0"):
+with tf.device("/cpu:0"):
     # model
-    model = template()
+    model = template(inputs)
 
 # restore
 print("restoring model")
