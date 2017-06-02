@@ -23,6 +23,11 @@ features_test, labels_test = next(dataset.test_set.random_batch_arrays_generator
 graph = tf.Graph()
 sess = tf.Session(graph=graph)
 
+# inputs
+inputs = dict(
+    features = features_test,
+    labels = labels_test
+)
 
 # create model template
 template = Model(
@@ -31,14 +36,10 @@ template = Model(
     graph = graph,
     sess = sess,
     seed = seed,
-    inputs = dict(
-        features = features_test,
-        labels = labels_test
-    )
 )
 
 #model
-model = template()
+model = template(inputs)
 
 # restore
 print("restoring model")

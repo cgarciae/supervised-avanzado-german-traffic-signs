@@ -1,10 +1,9 @@
-from tfinterface.supervised import SupervisedModel
+from tfinterface.supervised import SoftmaxClassifier
 import tensorflow as tf
 
-class Model(SupervisedModel):
+class Model(SoftmaxClassifier):
 
     def __init__(self, n_classes, *args, **kwargs):
-        kwargs["loss"] = "softmax"
         self.n_classes = n_classes
 
         self._initial_learning_rate = kwargs.pop("initial_learning_rate", 0.001)
@@ -14,10 +13,20 @@ class Model(SupervisedModel):
 
         super(Model, self).__init__(*args, **kwargs)
 
-
-    def _build(self):
+    def get_labels(self):
         # one hot labels
-        self.labels = tf.one_hot(self.inputs.labels, self.n_classes)
+        return tf.one_hot(self.inputs.labels, self.n_classes)
+
+    def get_learning_rate(self):
+        return tf.train.exponential_decay(
+            self._initial_learning_rate,
+            self.inputs.global_step,
+            self._decay_steps,
+            self._decay_rate,
+            staircase = True
+        )
+
+    def get_logits(self):
 
         # cast
         net = tf.cast(self.inputs.features, tf.float32, "cast")
@@ -44,14 +53,9 @@ class Model(SupervisedModel):
         net = tf.layers.dense(net, 512, activation=tf.nn.elu)
 
         # output layer
-        self.logits = tf.layers.dense(net, self.n_classes)
-        self.predictions = tf.nn.softmax(self.logits)
+        return tf.layers.dense(net, self.n_classes)
 
-
-        self.learning_rate = tf.train.exponential_decay(
-            self._initial_learning_rate,
-            self.inputs.global_step,
-            self._decay_steps,
-            self._decay_rate,
-            staircase = True
-        )
+    def get_summaries(self):
+        return [
+            tf.summary.scalar("learning_rate", self.learning_rate)
+        ]

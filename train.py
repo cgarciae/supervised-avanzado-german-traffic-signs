@@ -22,6 +22,12 @@ data_generator = cz.map(Dict(features = P[0], labels = P[1]), data_generator)
 graph = tf.Graph()
 sess = tf.Session(graph=graph)
 
+# inputs
+inputs = dict(
+    features = dict(shape = (None, 32, 32, 3)),
+    labels = dict(shape = (None,), dtype = tf.uint8)
+)
+
 # create model template
 template = Model(
     n_classes = 43,
@@ -30,14 +36,10 @@ template = Model(
     sess = sess,
     seed = seed,
     optimizer = tf.train.AdamOptimizer,
-    inputs = dict(
-        features = dict(shape = (None, 32, 32, 3)),
-        labels = dict(shape = (None,), dtype = tf.uint8)
-    )
 )
 
 # model
-model = template()
+model = template(inputs)
 
 # initialize variables
 model.initialize()
