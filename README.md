@@ -17,7 +17,11 @@ score = n_aciertos / n_imagenes * 100
 donde `n_aciertos` es el numero de imagenes clasificadas de forma correcta y `n_imagenes` es el numero total de imagenes en el `test-set`.
 
 ### Requerimientos
-Puedes instalar los requirementos fácilmente utilizando el commando
+Clona este repositorio y ejecuta el commando
+```bash
+git checkout feature/red-mediana
+```
+Despues puedes instalar los requirementos fácilmente utilizando el commando
 
 ```bash
 pip install -r requirements.txt
@@ -68,7 +72,6 @@ python train.py
 ```
 Este script corre realiza lo siguiente
 
-* Corre el modelo en la CPU
 * Utiliza `seed = 32` para controlar la aleatoreidad y que los resultados sean reproducibles
 * Entrena el modelo por `1000` iteraciones
 * Graba el modelo en los archivos `basic-conv-net.tf.*`
@@ -81,7 +84,7 @@ Ver el score del `test-set` ejecuta
 python test.py
 ```
 
-Resultado: **0.934499979019**
+Resultado: **0.945000052452**
 
 
 ### Visualizacion
