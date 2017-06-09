@@ -44,12 +44,19 @@ dataget get --dont-process german-traffic-signs
 Se utilizo una Red Neuronal Convolucional pequeña con la siguiente arquitectura:
 
 * Inputs: 3 filtros (RGB)
-* Capa Convolucional 1: 16 filtros, kernel 3x3, funcion de activacion ELU
-* Max Pool: kernel 2x2
-* Capa Convolucional 2: 32 filtros, kernel 3x3, funcion de activacion ELU
+* Capa Convolucional: 16 filtros, kernel 5x5, padding 'same', funcion de activacion ELU
+* Capa Convolucional: 32 filtros, kernel 3x3, padding 'same', funcion de activacion ELU
+* Max Pool: kernel 2x2, stride 2
+* Capa Convolucional: 64 filtros, kernel 3x3, padding 'same', funcion de activacion ELU
+* Max Pool: kernel 2x2, stride 2
+* Capa Convolucional: 64 filtros, kernel 3x3, padding 'same', funcion de activacion ELU
 * Flatten: se aplana a vector
-* Capa Densa: 256 neuronas, activacion ELU
+* Capa Densa: 2048 neuronas, activacion ELU
+* Capa Densa: 512 neuronas, activacion ELU
 * Capa Densa Output: 32 neuronal, activacion softmax
+
+###### Parametros
+Este modelo utiliza `9,523,083` parametros.
 
 ##### Entrenamiento
 Se utilizo un Stocastic Gradient Descent con los siguente parametros

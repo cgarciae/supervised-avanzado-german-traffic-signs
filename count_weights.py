@@ -10,6 +10,11 @@ from name import network_name
 graph = tf.Graph()
 sess = tf.Session(graph=graph)
 
+# inputs
+inputs = dict(
+    features = dict(shape = (None, 32, 32, 3)),
+    labels = dict(shape = (None,), dtype = tf.uint8)
+)
 
 # create model template
 template = Model(
@@ -19,15 +24,11 @@ template = Model(
     sess = sess,
     # seed = seed,
     optimizer = tf.train.AdamOptimizer,
-    inputs = dict(
-        features = dict(shape = (None, 32, 32, 3)),
-        labels = dict(shape = (None,), dtype = tf.uint8)
-    )
+
 )
 
-
 # model
-model = template()
+model = template(inputs)
 
 with graph.as_default():
     print("")
