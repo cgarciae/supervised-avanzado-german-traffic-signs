@@ -52,7 +52,7 @@ model.fit(
     epochs = 4000,
     log_summaries = True,
     log_interval = 10,
-    # print_test_info = True
+    print_test_info = True,
 )
 
 # save

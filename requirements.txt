@@ -5,4 +5,4 @@ pandas
 jupyter
 matplotlib
 dataget
-tfinterface>=0.0.2
+tfinterface>=0.0.10

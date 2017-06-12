@@ -1,0 +1,8 @@
+pillow
+scipy
+numpy
+pandas
+jupyter
+matplotlib
+git+https://github.com/cgarciae/dataget.git@develop
+tfinterface
