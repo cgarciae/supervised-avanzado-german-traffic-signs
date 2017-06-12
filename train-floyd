@@ -1,0 +1,7 @@
+#! /bin/bash
+
+floyd run \
+  --gpu \
+  --env tensorflow:py2 \
+  --data qvcZpNzKjjWRTahD8Cr6XV \
+  "DATAGET_HOME=/input MODEL_PATH=/output python train.py"
