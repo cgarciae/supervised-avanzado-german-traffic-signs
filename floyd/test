@@ -1,7 +1,7 @@
 #! /bin/bash
 
-data_output_id=$(cat floyd/ids.yml | shyaml data.output)
-model_output_id=$(cat floyd/ids.yml | shyaml train.output)
+data_output_id=$(cat floyd/ids.yml | shyaml get-value data.output)
+model_output_id=$(cat floyd/ids.yml | shyaml get-value train.output)
 
 floyd run \
   --gpu \
