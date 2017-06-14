@@ -1,0 +1,11 @@
+#! /bin/bash
+
+data_output_id=$(cat floyd/ids.yml | shyaml data.output)
+model_output_id=$(cat floyd/ids.yml | shyaml train.output)
+
+floyd run \
+  --gpu \
+  --env tensorflow:py2 \
+  --data $data_output_id:data \
+  --data $model_output_id:model \
+  "DATAGET_HOME=/data MODEL_PATH=/model python test.py"

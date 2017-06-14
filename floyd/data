@@ -1,5 +1,5 @@
 #! /bin/bash
-
+floyd init german-traffic-signs/data
 floyd run \
   --cpu \
   --env tensorflow:py2 \

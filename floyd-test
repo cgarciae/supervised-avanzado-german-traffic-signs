@@ -1,8 +1,0 @@
-#! /bin/bash
-
-floyd run \
-  --gpu \
-  --env tensorflow:py2 \
-  --data qvcZpNzKjjWRTahD8Cr6XV:data \
-  --data zrgurpJQ6LJid9HQVwpwuM:model \
-  "DATAGET_HOME=/data MODEL_PATH=/model python test.py"
