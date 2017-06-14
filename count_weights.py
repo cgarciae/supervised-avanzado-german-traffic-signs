@@ -33,5 +33,5 @@ model = template(inputs)
 with graph.as_default():
     print("")
     print("##########################################################")
-    print("Number of Weights = {:,}".format(np.sum([np.prod(v.get_shape().as_list()) for v in tf.trainable_variables()])))
+    print("Number of Weights = {:,}".format(model.count_weights()))
     print("##########################################################")
