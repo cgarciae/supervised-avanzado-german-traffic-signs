@@ -1,0 +1,6 @@
+#! /bin/bash
+
+floyd run \
+  --cpu \
+  --env tensorflow:py2 \
+  "DATAGET_HOME=/output dataget get german-traffic-signs"
