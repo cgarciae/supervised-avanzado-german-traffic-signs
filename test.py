@@ -8,7 +8,7 @@ import random
 from name import network_name, model_path
 
 # seed: resultados repetibles
-seed = 32
+seed = 31
 np.random.seed(seed=seed)
 random.seed(seed)
 
