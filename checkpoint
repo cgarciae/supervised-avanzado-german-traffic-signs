@@ -1,2 +1,0 @@
-model_checkpoint_path: "/data/cristian/german-traffic-signs/red-mediana.tf"
-all_model_checkpoint_paths: "/data/cristian/german-traffic-signs/red-mediana.tf"
