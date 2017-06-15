@@ -47,7 +47,7 @@ class Model(SoftmaxClassifier):
         net = tf.contrib.layers.flatten(net)
 
         # dense layers
-        net = tf.layers.dense(net, 2048, activation=tf.nn.elu)
+        net = tf.layers.dense(net, 1024, activation=tf.nn.elu)
         net = tf.nn.dropout(net, self.inputs.keep_prob)
 
         net = tf.layers.dense(net, 512, activation=tf.nn.elu)

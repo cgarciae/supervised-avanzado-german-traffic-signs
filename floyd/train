@@ -1,7 +1,9 @@
 #! /bin/bash
 set -e
 
-floyd init german-traffic-signs/train
+network_name=$(python -c "import name; print(name.network_name)")
+
+floyd init german-traffic-signs/$network_name/train
 
 data_output_id=$(cat floyd/ids.yml | shyaml get-value data.output)
 floyd run \
