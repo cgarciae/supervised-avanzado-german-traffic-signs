@@ -6,12 +6,17 @@ from model import Model
 import numpy as np
 import random
 from name import network_name
+from tfinterface.supervised import SupervisedInputs
 
 graph = tf.Graph()
 sess = tf.Session(graph=graph)
 
 # inputs
-inputs = dict(
+inputs = SupervisedInputs(
+    name = network_name + "_inputs",
+    graph = graph,
+    sess = sess,
+    # tensors
     features = dict(shape = (None, 32, 32, 3)),
     labels = dict(shape = (None,), dtype = tf.uint8)
 )
@@ -28,6 +33,7 @@ template = Model(
 )
 
 # model
+inputs = inputs()
 model = template(inputs)
 
 with graph.as_default():

@@ -27,6 +27,9 @@ sess = tf.Session(graph=graph)
 # inputs
 inputs = SupervisedInputs(
     name = network_name + "_inputs",
+    graph = graph,
+    sess = sess,
+    # tensors
     features = features_test,
     labels = labels_test
 )
