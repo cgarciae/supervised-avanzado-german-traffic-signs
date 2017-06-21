@@ -4,5 +4,6 @@ numpy
 pandas
 jupyter
 matplotlib
+plotly
 git+https://github.com/cgarciae/dataget.git@develop
 git+https://github.com/cgarciae/tfinterface.git@develop

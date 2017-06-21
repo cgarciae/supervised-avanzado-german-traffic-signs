@@ -1,0 +1,14 @@
+#! /bin/bash
+set -e
+
+floyd init german-traffic-signs/jupyter
+
+data_output_id=$(cat floyd/ids.yml | shyaml get-value data.output)
+model_output_id=$(cat floyd/ids.yml | shyaml get-value train.output)
+
+floyd run \
+  --cpu \
+  --env tensorflow:py2 \
+  --data $data_output_id:data \
+  --data $model_output_id:model \
+  --mode jupyter
