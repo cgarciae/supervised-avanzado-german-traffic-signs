@@ -6,6 +6,7 @@ from model import Model
 import numpy as np
 import random
 from name import network_name, model_path
+from tfinterface.supervised import SupervisedInputs
 
 # seed: resultados repetibles
 seed = 32
@@ -23,10 +24,15 @@ graph = tf.Graph()
 sess = tf.Session(graph=graph)
 
 # inputs
-inputs = dict(
+inputs = SupervisedInputs(
+    name = network_name + "_inputs",
+    graph = graph,
+    sess = sess,
+    # tensors
     features = dict(shape = (None, 32, 32, 3)),
     labels = dict(shape = (None,), dtype = tf.uint8)
 )
+
 
 # create model template
 template = Model(
@@ -40,6 +46,9 @@ template = Model(
 )
 
 # model
+assert template.graph is inputs.graph
+
+inputs = inputs()
 model = template(inputs)
 
 # initialize variables

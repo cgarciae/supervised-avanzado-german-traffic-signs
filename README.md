@@ -41,7 +41,7 @@ dataget get --dont-process german-traffic-signs
 
 ### Metodo
 ##### Modelo
-Se utilizo una Red Neuronal Convolucional pequeña con la siguiente arquitectura:
+Se utilizo una Red Neuronal Convolucional con la siguiente arquitectura:
 
 * Inputs: 3 filtros (RGB)
 * Capa Convolucional: 16 filtros, kernel 5x5, padding 'same', funcion de activacion ELU

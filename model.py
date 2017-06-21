@@ -13,11 +13,11 @@ class Model(SoftmaxClassifier):
 
         super(Model, self).__init__(*args, **kwargs)
 
-    def get_labels(self):
+    def get_labels(self, inputs):
         # one hot labels
-        return tf.one_hot(self.inputs.labels, self.n_classes)
+        return tf.one_hot(inputs.labels, self.n_classes)
 
-    def get_learning_rate(self):
+    def get_learning_rate(self, inputs):
         return tf.train.exponential_decay(
             self._initial_learning_rate,
             self.inputs.global_step,
@@ -26,7 +26,7 @@ class Model(SoftmaxClassifier):
             staircase = True
         )
 
-    def get_logits(self):
+    def get_logits(self, inputs):
 
         # cast
         net = tf.cast(self.inputs.features, tf.float32, "cast")
@@ -55,7 +55,7 @@ class Model(SoftmaxClassifier):
         # output layer
         return tf.layers.dense(net, self.n_classes)
 
-    def get_summaries(self):
+    def get_summaries(self, inputs):
         return [
             tf.summary.scalar("learning_rate", self.learning_rate)
         ]
