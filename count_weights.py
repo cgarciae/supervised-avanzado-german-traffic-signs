@@ -7,13 +7,16 @@ import numpy as np
 import random
 from name import network_name
 from tfinterface.supervised import SupervisedInputs
+import click
 
-graph = tf.Graph()
-sess = tf.Session(graph=graph)
+@click.command()
+@click.option('--device', '-d', default="/gpu:0", help='Device, default = gpu:0')
+def main(device):
 
-# inputs
-with tf.device("cpu:0"):
+    graph = tf.Graph()
+    sess = tf.Session(graph=graph)
 
+    # inputs
     inputs = SupervisedInputs(
         name = network_name + "_inputs",
         graph = graph,
@@ -35,12 +38,15 @@ with tf.device("cpu:0"):
     )
 
     # model
+    with tf.device(device):
+        inputs = inputs()
+        model = template(inputs)
 
-    inputs = inputs()
-    model = template(inputs)
+    with graph.as_default():
+        print("")
+        print("##########################################################")
+        print("Number of Weights = {:,}".format(model.count_weights()))
+        print("##########################################################")
 
-with graph.as_default():
-    print("")
-    print("##########################################################")
-    print("Number of Weights = {:,}".format(model.count_weights()))
-    print("##########################################################")
+if __name__ == '__main__':
+    main()

@@ -7,63 +7,72 @@ import numpy as np
 import random
 from name import network_name, model_path
 from tfinterface.supervised import SupervisedInputs
+import click
 
-# seed: resultados repetibles
-seed = 32
-np.random.seed(seed=seed)
-random.seed(seed)
+@click.command()
+@click.option('--device', '-d', default="/gpu:0", help='Device, default = gpu:0')
+@click.option('--epochs', '-e', default=4000, help='Number of epochs, default = 4000')
+def main(device, epochs):
 
-# dataget
-dataset = data("german-traffic-signs").get()
+    # seed: resultados repetibles
+    seed = 32
+    np.random.seed(seed=seed)
+    random.seed(seed)
 
-# obtener todas las imagenes (lento)
-data_generator = dataset.training_set.random_batch_arrays_generator(32)
-data_generator = cz.map(Dict(features = P[0], labels = P[1]), data_generator)
+    # dataget
+    dataset = data("german-traffic-signs").get()
 
-graph = tf.Graph()
-sess = tf.Session(graph=graph)
+    # obtener todas las imagenes (lento)
+    data_generator = dataset.training_set.random_batch_arrays_generator(32)
+    data_generator = cz.map(Dict(features = P[0], labels = P[1]), data_generator)
 
-# inputs
-inputs = SupervisedInputs(
-    name = network_name + "_inputs",
-    graph = graph,
-    sess = sess,
-    # tensors
-    features = dict(shape = (None, 32, 32, 3)),
-    labels = dict(shape = (None,), dtype = tf.uint8)
-)
+    graph = tf.Graph()
+    sess = tf.Session(graph=graph)
+
+    # inputs
+    inputs = SupervisedInputs(
+        name = network_name + "_inputs",
+        graph = graph,
+        sess = sess,
+        # tensors
+        features = dict(shape = (None, 32, 32, 3)),
+        labels = dict(shape = (None,), dtype = tf.uint8)
+    )
 
 
-# create model template
-template = Model(
-    n_classes = 43,
-    name = network_name,
-    model_path = model_path,
-    graph = graph,
-    sess = sess,
-    seed = seed,
-    optimizer = tf.train.AdamOptimizer,
-)
+    # create model template
+    template = Model(
+        n_classes = 43,
+        name = network_name,
+        model_path = model_path,
+        graph = graph,
+        sess = sess,
+        seed = seed,
+        optimizer = tf.train.AdamOptimizer,
+    )
 
-# model
-assert template.graph is inputs.graph
+    # model
 
-inputs = inputs()
-model = template(inputs)
+    with tf.device(device):
+        inputs = inputs()
+        model = template(inputs)
 
-# initialize variables
-model.initialize()
+    # initialize variables
+    model.initialize()
 
-# fit
-print("training")
-model.fit(
-    data_generator = data_generator,
-    epochs = 4000,
-    log_summaries = True,
-    log_interval = 10,
-    print_test_info = True,
-)
+    # fit
+    print("training")
+    model.fit(
+        data_generator = data_generator,
+        epochs = epochs,
+        log_summaries = True,
+        log_interval = 10,
+        print_test_info = True,
+    )
 
-# save
-print("saving model")
-model.save()
+    # save
+    print("saving model")
+    model.save()
+
+if __name__ == '__main__':
+    main()

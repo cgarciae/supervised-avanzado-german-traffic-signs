@@ -7,52 +7,64 @@ import numpy as np
 import random
 from name import network_name, model_path
 from tfinterface.supervised import SupervisedInputs
+import click
 
-# seed: resultados repetibles
-seed = 33
-np.random.seed(seed=seed)
-random.seed(seed)
+@click.command()
+@click.option('--device', '-d', default="/gpu:0", help='Device, default = gpu:0')
+def main(device):
+    print("DEVICE:", device)
 
-# dataget
-dataset = data("german-traffic-signs").get()
+    # seed: resultados repetibles
+    seed = 33
+    np.random.seed(seed=seed)
+    random.seed(seed)
 
-# obtener imagenes
-print("loading data")
-features_test, labels_test = dataset.test_set.arrays()
-# features_test, labels_test = next(dataset.test_set.random_batch_arrays_generator(2000))
+    # dataget
+    dataset = data("german-traffic-signs").get()
 
-graph = tf.Graph()
-sess = tf.Session(graph=graph)
+    # obtener imagenes
+    print("loading data")
+    features_test, labels_test = dataset.test_set.arrays()
+    # features_test, labels_test = next(dataset.test_set.random_batch_arrays_generator(2000))
 
-# inputs
-inputs = SupervisedInputs(
-    name = network_name + "_inputs",
-    graph = graph,
-    sess = sess,
-    # tensors
-    features = features_test,
-    labels = labels_test
-)
 
-# create model template
-template = Model(
-    n_classes = 43,
-    name = network_name,
-    model_path = model_path,
-    graph = graph,
-    sess = sess,
-    seed = seed,
-)
+    #model
+    with tf.device(device):
+        graph = tf.Graph()
+        sess = tf.Session(graph=graph)
 
-#model
-inputs = inputs()
-model = template(inputs)
+        # inputs
+        inputs = SupervisedInputs(
+            name = network_name + "_inputs",
+            graph = graph,
+            sess = sess,
+            # tensors
+            features = features_test,
+            labels = labels_test
+        )
 
-# restore
-print("restoring model")
-model.initialize(restore=True)
+        # create model template
+        template = Model(
+            n_classes = 43,
+            name = network_name,
+            model_path = model_path,
+            graph = graph,
+            sess = sess,
+            seed = seed,
+        )
 
-# test
-print("testing")
-test_score = model.score()
-print("test score: {}".format(test_score))
+
+        inputs = inputs()
+        model = template(inputs)
+
+        # restore
+        print("restoring model")
+        model.initialize(restore=True)
+
+        # test
+        print("testing")
+        test_score = model.score()
+        print("test score: {}".format(test_score))
+
+if __name__ == '__main__':
+    main()

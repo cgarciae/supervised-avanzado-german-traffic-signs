@@ -44,19 +44,21 @@ dataget get --dont-process german-traffic-signs
 Se utilizo una Red Neuronal Convolucional con la siguiente arquitectura:
 
 * Inputs: 3 filtros (RGB)
-* Capa Convolucional: 16 filtros, kernel 5x5, padding 'same', funcion de activacion ELU
+* Capa Convolucional: 32 filtros, kernel 5x5, padding 'same', funcion de activacion ELU
 * Capa Convolucional: 32 filtros, kernel 3x3, padding 'same', funcion de activacion ELU
 * Max Pool: kernel 2x2, stride 2
 * Capa Convolucional: 64 filtros, kernel 3x3, padding 'same', funcion de activacion ELU
 * Max Pool: kernel 2x2, stride 2
 * Capa Convolucional: 64 filtros, kernel 3x3, padding 'same', funcion de activacion ELU
 * Flatten: se aplana a vector
+* Droput: keep_prob 0.5
 * Capa Densa: 2048 neuronas, activacion ELU
+* Droput: keep_prob 0.5
 * Capa Densa: 512 neuronas, activacion ELU
 * Capa Densa Output: 32 neuronal, activacion softmax
 
 ###### Parametros
-Este modelo utiliza `9,523,083` parametros.
+Este modelo utiliza `9,534,417` parametros.
 
 ##### Entrenamiento
 Se utilizo un Stocastic Gradient Descent con los siguente parametros
@@ -75,15 +77,12 @@ No se intento optimizar el modelo de ninguna manera, en especial:
 ### Procedimiento
 El modelo se encuentra en el archivo `model.py`. Para entrenarlo ejecuta el comando
 ```
-python train.py
+python train.py --epochs 8000
 ```
 Este script corre realiza lo siguiente
 
 * Utiliza `seed = 32` para controlar la aleatoreidad y que los resultados sean reproducibles
-* Entrena el modelo por `1000` iteraciones
-* Graba el modelo en los archivos `basic-conv-net.tf.*`
-
-**Nota:** Los archivos `basic-conv-net.tf.*` del modelo ya vienen el el repositorio, por lo tanto no es del todo necesario ejecutar el script de entrenamiento.
+* Entrena el modelo por `8000` iteraciones
 
 ### Resultados
 Ver el score del `test-set` ejecuta
@@ -91,7 +90,7 @@ Ver el score del `test-set` ejecuta
 python test.py
 ```
 
-Resultado: **0.948614895344**
+Resultado: **0.957878053188**
 
 
 ### Visualizacion

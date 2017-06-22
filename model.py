@@ -36,7 +36,7 @@ class Model(SoftmaxClassifier):
         net = tf.layers.batch_normalization(net, training=inputs.training)
 
         # conv layers
-        net = ti.layers.conv2d_batch_norm(net, 16, [5, 5], activation=tf.nn.elu, name="elu_1", padding="same", bn_kwargs=dict(training=inputs.training))
+        net = ti.layers.conv2d_batch_norm(net, 32, [5, 5], activation=tf.nn.elu, name="elu_1", padding="same", bn_kwargs=dict(training=inputs.training))
 
 
         net = ti.layers.conv2d_batch_norm(net, 32, [3, 3], activation=tf.nn.elu, name="elu_2", padding="same", bn_kwargs=dict(training=inputs.training))
@@ -50,7 +50,7 @@ class Model(SoftmaxClassifier):
 
         # flatten
         net = tf.contrib.layers.flatten(net)
-
+        net = tf.nn.dropout(net, self.inputs.keep_prob)
         # dense layers
         net = ti.layers.dense_batch_norm(net, 2048, activation=tf.nn.elu, name="dense_1", bn_kwargs=dict(training=inputs.training))
         net = tf.nn.dropout(net, self.inputs.keep_prob)
