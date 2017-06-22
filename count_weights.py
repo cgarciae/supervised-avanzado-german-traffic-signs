@@ -12,29 +12,32 @@ graph = tf.Graph()
 sess = tf.Session(graph=graph)
 
 # inputs
-inputs = SupervisedInputs(
-    name = network_name + "_inputs",
-    graph = graph,
-    sess = sess,
-    # tensors
-    features = dict(shape = (None, 32, 32, 3)),
-    labels = dict(shape = (None,), dtype = tf.uint8)
-)
+with tf.device("cpu:0"):
 
-# create model template
-template = Model(
-    n_classes = 43,
-    name = network_name,
-    graph = graph,
-    sess = sess,
-    # seed = seed,
-    optimizer = tf.train.AdamOptimizer,
+    inputs = SupervisedInputs(
+        name = network_name + "_inputs",
+        graph = graph,
+        sess = sess,
+        # tensors
+        features = dict(shape = (None, 32, 32, 3)),
+        labels = dict(shape = (None,), dtype = tf.uint8)
+    )
 
-)
+    # create model template
+    template = Model(
+        n_classes = 43,
+        name = network_name,
+        graph = graph,
+        sess = sess,
+        # seed = seed,
+        optimizer = tf.train.AdamOptimizer,
 
-# model
-inputs = inputs()
-model = template(inputs)
+    )
+
+    # model
+
+    inputs = inputs()
+    model = template(inputs)
 
 with graph.as_default():
     print("")

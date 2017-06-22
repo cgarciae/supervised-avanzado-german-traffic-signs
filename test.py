@@ -9,7 +9,7 @@ from name import network_name, model_path
 from tfinterface.supervised import SupervisedInputs
 
 # seed: resultados repetibles
-seed = 31
+seed = 33
 np.random.seed(seed=seed)
 random.seed(seed)
 

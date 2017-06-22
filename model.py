@@ -1,5 +1,7 @@
 from tfinterface.supervised import SoftmaxClassifier
 import tensorflow as tf
+import tfinterface as ti
+
 
 class Model(SoftmaxClassifier):
 
@@ -31,26 +33,29 @@ class Model(SoftmaxClassifier):
         # cast
         net = tf.cast(self.inputs.features, tf.float32, "cast")
 
-        # conv layers
-        net = tf.layers.conv2d(net, 16, [5, 5], activation=tf.nn.elu, name="elu_1", padding="same")
+        net = tf.layers.batch_normalization(net, training=inputs.training)
 
-        net = tf.layers.conv2d(net, 32, [3, 3], activation=tf.nn.elu, name="elu_2", padding="same")
+        # conv layers
+        net = ti.layers.conv2d_batch_norm(net, 16, [5, 5], activation=tf.nn.elu, name="elu_1", padding="same", bn_kwargs=dict(training=inputs.training))
+
+
+        net = ti.layers.conv2d_batch_norm(net, 32, [3, 3], activation=tf.nn.elu, name="elu_2", padding="same", bn_kwargs=dict(training=inputs.training))
         net = tf.layers.max_pooling2d(net, pool_size=2, strides=2, name="max_pool_1", padding="same")
 
 
-        net = tf.layers.conv2d(net, 64, [3, 3], activation=tf.nn.elu, name="elu_3", padding="same")
+        net = ti.layers.conv2d_batch_norm(net, 64, [3, 3], activation=tf.nn.elu, name="elu_3", padding="same", bn_kwargs=dict(training=inputs.training))
         net = tf.layers.max_pooling2d(net, pool_size=2, strides=2, name="max_pool_2", padding="same")
 
-        net = tf.layers.conv2d(net, 64, [3, 3], activation=tf.nn.elu, name="elu_4", padding="same")
+        net = ti.layers.conv2d_batch_norm(net, 64, [3, 3], activation=tf.nn.elu, name="elu_4", padding="same", bn_kwargs=dict(training=inputs.training))
 
         # flatten
         net = tf.contrib.layers.flatten(net)
 
         # dense layers
-        net = tf.layers.dense(net, 2048, activation=tf.nn.elu)
+        net = ti.layers.dense_batch_norm(net, 2048, activation=tf.nn.elu, name="dense_1", bn_kwargs=dict(training=inputs.training))
         net = tf.nn.dropout(net, self.inputs.keep_prob)
 
-        net = tf.layers.dense(net, 512, activation=tf.nn.elu)
+        net = ti.layers.dense_batch_norm(net, 512, activation=tf.nn.elu, name="dense_2", bn_kwargs=dict(training=inputs.training))
 
         # output layer
         return tf.layers.dense(net, self.n_classes)
