@@ -48,14 +48,15 @@ Se utilizo una Red Neuronal Convolucional con la siguiente arquitectura:
 * Capa Fire: filtros sequeez 16, filtros expand-1x1 64, filtros expand-3x3 64, padding 'same', funcion de activacion ELU
 * Capa Fire: filtros sequeez 16, filtros expand-1x1 64, filtros expand-3x3 64, padding 'same', funcion de activacion ELU
 * Capa Fire: filtros sequeez 32, filtros expand-1x1 128, filtros expand-3x3 128, padding 'same', funcion de activacion ELU
+* Max Pooling: kernel 3x3, stride 2, padding 'same'
 * Capa Fire: filtros sequeez 32, filtros expand-1x1 128, filtros expand-3x3 128, padding 'same', funcion de activacion ELU
 * Capa Fire: filtros sequeez 48, filtros expand-1x1 192, filtros expand-3x3 192, padding 'same', funcion de activacion ELU
-* Max Pooling: kernel 3x3, stride 2, padding 'same'
 * Capa Fire: filtros sequeez 48, filtros expand-1x1 192, filtros expand-3x3 192, padding 'same', funcion de activacion ELU
 * Capa Fire: filtros sequeez 64, filtros expand-1x1 256, filtros expand-3x3 256, padding 'same', funcion de activacion ELU
+* Max Pooling: kernel 3x3, stride 2, padding 'same'
 * Capa Fire: filtros sequeez 64, filtros expand-1x1 256, filtros expand-3x3 256, padding 'same', funcion de activacion ELU
 * Capa Convolucional: 43 filtros, kernel 1x1, padding 'same', funcion de activacion lineal
-* Average Pooling: kernel 16x16, stride 1
+* Average Pooling: kernel 8x8, stride 1
 * Flatten: se convierte a vector de 43 dimensiones
 * Softmax: funcion de activacion softmax directamente sobre flatten
 ###### Parametros

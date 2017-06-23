@@ -40,23 +40,26 @@ class Model(SoftmaxClassifier):
         net = ti.layers.fire(net, 16, 64, 64, activation=tf.nn.elu, padding='same') #fire2
         net = ti.layers.fire(net, 16, 64, 64, activation=tf.nn.elu, padding='same') #fire3
         net = ti.layers.fire(net, 32, 128, 128, activation=tf.nn.elu, padding='same') #fire4
-        net = ti.layers.fire(net, 32, 128, 128, activation=tf.nn.elu, padding='same') #fire5
-        net = ti.layers.fire(net, 48, 192, 192, activation=tf.nn.elu, padding='same') #fire6
 
         # max pooling
         net = tf.layers.max_pooling2d(net, [3, 3], strides=2, padding='same')
 
-        # fire
+        net = ti.layers.fire(net, 32, 128, 128, activation=tf.nn.elu, padding='same') #fire5
+        net = ti.layers.fire(net, 48, 192, 192, activation=tf.nn.elu, padding='same') #fire6
         net = ti.layers.fire(net, 48, 192, 192, activation=tf.nn.elu, padding='same') #fire7
         net = ti.layers.fire(net, 64, 256, 256, activation=tf.nn.elu, padding='same') #fire8
-        net = ti.layers.fire(net, 64, 256, 256, activation=tf.nn.elu, padding='same') #fire9
 
-        # droput
+        # max pooling
+        net = tf.layers.max_pooling2d(net, [3, 3], strides=2, padding='same')
+
+        #fire + droput
+        net = ti.layers.fire(net, 64, 256, 256, activation=tf.nn.elu, padding='same') #fire9
         net = tf.layers.dropout(net, rate=0.25, training=inputs.training)
 
         # reduce
         net = tf.layers.conv2d(net, self.n_classes, [1, 1], padding='same') #linear
-        net = tf.layers.average_pooling2d(net, [16, 16], strides=1)
+        shape = net.get_shape()[1]
+        net = tf.layers.average_pooling2d(net, [shape, shape], strides=1)
 
         # flatten
         net = tf.contrib.layers.flatten(net)
