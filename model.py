@@ -33,32 +33,35 @@ class Model(SoftmaxClassifier):
         # cast
         net = tf.cast(self.inputs.features, tf.float32, "cast")
 
-        net = tf.layers.batch_normalization(net, training=inputs.training)
+        # big kernel
+        net = tf.layers.conv2d(net, 96, [7, 7], activation=tf.nn.elu, padding='same')
 
-        # conv layers
-        net = ti.layers.conv2d_batch_norm(net, 32, [5, 5], activation=tf.nn.elu, name="elu_1", padding="same", bn_kwargs=dict(training=inputs.training))
+        # fire
+        net = ti.layers.fire(net, 16, 64, 64, activation=tf.nn.elu, padding='same') #fire2
+        net = ti.layers.fire(net, 16, 64, 64, activation=tf.nn.elu, padding='same') #fire3
+        net = ti.layers.fire(net, 32, 128, 128, activation=tf.nn.elu, padding='same') #fire4
+        net = ti.layers.fire(net, 32, 128, 128, activation=tf.nn.elu, padding='same') #fire5
+        net = ti.layers.fire(net, 48, 192, 192, activation=tf.nn.elu, padding='same') #fire6
 
+        # max pooling
+        net = tf.layers.max_pooling2d(net, [3, 3], strides=2, padding='same')
 
-        net = ti.layers.conv2d_batch_norm(net, 32, [3, 3], activation=tf.nn.elu, name="elu_2", padding="same", bn_kwargs=dict(training=inputs.training))
-        net = tf.layers.max_pooling2d(net, pool_size=2, strides=2, name="max_pool_1", padding="same")
+        # fire
+        net = ti.layers.fire(net, 48, 192, 192, activation=tf.nn.elu, padding='same') #fire7
+        net = ti.layers.fire(net, 64, 256, 256, activation=tf.nn.elu, padding='same') #fire8
+        net = ti.layers.fire(net, 64, 256, 256, activation=tf.nn.elu, padding='same') #fire9
 
+        # droput
+        net = tf.layers.dropout(net, rate=0.5, training=inputs.training)
 
-        net = ti.layers.conv2d_batch_norm(net, 64, [3, 3], activation=tf.nn.elu, name="elu_3", padding="same", bn_kwargs=dict(training=inputs.training))
-        net = tf.layers.max_pooling2d(net, pool_size=2, strides=2, name="max_pool_2", padding="same")
-
-        net = ti.layers.conv2d_batch_norm(net, 64, [3, 3], activation=tf.nn.elu, name="elu_4", padding="same", bn_kwargs=dict(training=inputs.training))
+        # reduce
+        net = tf.layers.conv2d(net, self.n_classes, [1, 1], padding='same') #linear
+        net = tf.layers.average_pooling2d(net, [16, 16], strides=1)
 
         # flatten
         net = tf.contrib.layers.flatten(net)
-        net = tf.nn.dropout(net, self.inputs.keep_prob)
-        # dense layers
-        net = ti.layers.dense_batch_norm(net, 2048, activation=tf.nn.elu, name="dense_1", bn_kwargs=dict(training=inputs.training))
-        net = tf.nn.dropout(net, self.inputs.keep_prob)
-
-        net = ti.layers.dense_batch_norm(net, 512, activation=tf.nn.elu, name="dense_2", bn_kwargs=dict(training=inputs.training))
-
         # output layer
-        return tf.layers.dense(net, self.n_classes)
+        return net
 
     def get_summaries(self, inputs):
         return [

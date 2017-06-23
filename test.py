@@ -8,6 +8,8 @@ import random
 from name import network_name, model_path
 from tfinterface.supervised import SupervisedInputs
 import click
+from utils import batch_predict
+from sklearn.metrics import accuracy_score
 
 @click.command()
 @click.option('--device', '-d', default="/gpu:0", help='Device, default = gpu:0')
@@ -15,7 +17,7 @@ def main(device):
     print("DEVICE:", device)
 
     # seed: resultados repetibles
-    seed = 33
+    seed = 34
     np.random.seed(seed=seed)
     random.seed(seed)
 
@@ -24,8 +26,8 @@ def main(device):
 
     # obtener imagenes
     print("loading data")
-    features_test, labels_test = dataset.test_set.arrays()
-    # features_test, labels_test = next(dataset.test_set.random_batch_arrays_generator(2000))
+    # features_test, labels_test = dataset.test_set.arrays()
+    features_test, labels_test = next(dataset.test_set.random_batch_arrays_generator(500))
 
 
     #model
@@ -63,7 +65,8 @@ def main(device):
 
         # test
         print("testing")
-        test_score = model.score()
+        predictions = batch_predict(model, features_test, labels_test, 100)
+        test_score = accuracy_score(predictions, labels_test)
         print("test score: {}".format(test_score))
 
 if __name__ == '__main__':
