@@ -66,7 +66,7 @@ Se utilizo un Stocastic Gradient Descent con los siguente parametros
 
 * Optimizador: ADAM
 * Learning Rate: 0.001
-* Batch Size: 32
+* Batch Size: 64
 
 ##### Notas
 No se intento optimizar el modelo de ninguna manera, en especial:
@@ -91,7 +91,7 @@ Ver el score del `test-set` ejecuta
 python test.py
 ```
 
-Resultado: **0.958000063896**
+Resultado: **0.969833729216**
 
 
 ### Visualizacion

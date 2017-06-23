@@ -1,3 +1,8 @@
+from PIL import Image
+import numpy as np
+
+def batch_random_image_rotation(generator, rotation):
+    pass
 
 def batch_generator(total, batch_size):
 
@@ -13,7 +18,7 @@ def batch_generator(total, batch_size):
         i += batch_size
 
 
-def batch_predict(model, features, labels, batch_size):
+def batch_predict(model, features, batch_size, print_fn=None):
 
     preds_list = []
 
@@ -21,6 +26,9 @@ def batch_predict(model, features, labels, batch_size):
         preds = model.predict(features=features[batch])
         preds = np.argmax(preds, axis=1)
         preds_list.append(preds)
+
+        if print_fn:
+            print_fn(batch)
 
     return np.concatenate(preds_list, axis=0)
 

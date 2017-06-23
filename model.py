@@ -52,7 +52,7 @@ class Model(SoftmaxClassifier):
         net = ti.layers.fire(net, 64, 256, 256, activation=tf.nn.elu, padding='same') #fire9
 
         # droput
-        net = tf.layers.dropout(net, rate=0.5, training=inputs.training)
+        net = tf.layers.dropout(net, rate=0.25, training=inputs.training)
 
         # reduce
         net = tf.layers.conv2d(net, self.n_classes, [1, 1], padding='same') #linear

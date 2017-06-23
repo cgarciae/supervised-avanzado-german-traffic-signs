@@ -12,7 +12,8 @@ import click
 @click.command()
 @click.option('--device', '-d', default="/gpu:0", help='Device, default = gpu:0')
 @click.option('--epochs', '-e', default=4000, help='Number of epochs, default = 4000')
-def main(device, epochs):
+@click.option('--batch-size', '-b', default=64, help='Batch size, default = 64')
+def main(device, epochs, batch_size):
 
     # seed: resultados repetibles
     seed = 32
@@ -23,7 +24,7 @@ def main(device, epochs):
     dataset = data("german-traffic-signs").get()
 
     # obtener todas las imagenes (lento)
-    data_generator = dataset.training_set.random_batch_arrays_generator(32)
+    data_generator = dataset.training_set.random_batch_arrays_generator(batch_size)
     data_generator = cz.map(Dict(features = P[0], labels = P[1]), data_generator)
 
     graph = tf.Graph()
