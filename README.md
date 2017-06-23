@@ -92,7 +92,7 @@ Ver el score del `test-set` ejecuta
 python test.py
 ```
 
-Resultado: **0.969833729216**
+Resultado: **0.971971496437**
 
 
 ### Visualizacion
