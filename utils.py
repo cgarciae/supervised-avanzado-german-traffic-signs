@@ -11,7 +11,7 @@ def random_rotate_feature(feature, rotation):
 def batch_random_image_rotation(generator, rotation):
 
     for features, labels in generator:
-        
+
         features_list = map(lambda feature: random_rotate_feature(feature, rotation), features)
         features = np.stack(features_list, axis=0)
 
@@ -33,12 +33,12 @@ def batch_generator(total, batch_size):
         i += batch_size
 
 
-def batch_predict(model, features, batch_size, print_fn=None):
+def batch_predict(model, features, batch_size, print_fn=None, **kwargs):
 
     preds_list = []
 
     for batch in batch_generator(len(features), batch_size):
-        preds = model.predict(features=features[batch])
+        preds = model.predict(features=features[batch], **kwargs)
         preds = np.argmax(preds, axis=1)
         preds_list.append(preds)
 

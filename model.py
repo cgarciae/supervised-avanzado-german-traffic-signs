@@ -36,30 +36,30 @@ class Model(SoftmaxClassifier):
         net = tf.layers.batch_normalization(net, training=inputs.training)
 
         # big kernel
-        net = tf.layers.conv2d(net, 96, [7, 7], activation=tf.nn.elu, padding='same')
+        net = ti.layers.conv2d_batch_norm(net, 96, [7, 7], activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training))
 
         # fire
-        net = ti.layers.fire(net, 16, 64, 64, activation=tf.nn.elu, padding='same') #fire2
-        net = ti.layers.fire(net, 16, 64, 64, activation=tf.nn.elu, padding='same') #fire3
-        net = ti.layers.fire(net, 32, 128, 128, activation=tf.nn.elu, padding='same') #fire4
+        net = ti.layers.fire_batch_norm(net, 16, 64, 64, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire2
+        net = net + ti.layers.fire_batch_norm(net, 16, 64, 64, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire3
+        net = ti.layers.fire_batch_norm(net, 32, 128, 128, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire4
 
         # max pooling
         net = tf.layers.max_pooling2d(net, [3, 3], strides=2, padding='same')
 
-        net = ti.layers.fire(net, 32, 128, 128, activation=tf.nn.elu, padding='same') #fire5
-        net = ti.layers.fire(net, 48, 192, 192, activation=tf.nn.elu, padding='same') #fire6
-        net = ti.layers.fire(net, 48, 192, 192, activation=tf.nn.elu, padding='same') #fire7
-        net = ti.layers.fire(net, 64, 256, 256, activation=tf.nn.elu, padding='same') #fire8
+        net = net + ti.layers.fire_batch_norm(net, 32, 128, 128, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire5
+        net = ti.layers.fire_batch_norm(net, 48, 192, 192, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire6
+        net = net + ti.layers.fire_batch_norm(net, 48, 192, 192, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire7
+        net = ti.layers.fire_batch_norm(net, 64, 256, 256, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire8
 
         # max pooling
         net = tf.layers.max_pooling2d(net, [3, 3], strides=2, padding='same')
 
         #fire + droput
-        net = net + ti.layers.fire(net, 64, 256, 256, activation=tf.nn.elu, padding='same') #fire9
+        net = net + ti.layers.fire_batch_norm(net, 64, 256, 256, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire9
         net = tf.layers.dropout(net, rate=0.25, training=inputs.training)
 
         # reduce
-        net = tf.layers.conv2d(net, self.n_classes, [1, 1], padding='same') #linear
+        net = ti.layers.conv2d_batch_norm(net, self.n_classes, [1, 1], padding='same', bn_kwargs=dict(training=inputs.training)) #linear
         shape = net.get_shape()[1]
         net = tf.layers.average_pooling2d(net, [shape, shape], strides=1)
 
@@ -82,3 +82,8 @@ class Model(SoftmaxClassifier):
             ),
             net
         )
+
+    def get_update(self, *args, **kwargs):
+        update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
+        with tf.control_dependencies(update_ops):
+            return super(Model, self).get_update(*args, **kwargs)

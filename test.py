@@ -10,7 +10,7 @@ import random
 from name import network_name, model_path
 from tfinterface.supervised import SupervisedInputs
 import click
-from utils import batch_predict
+from utils import batch_generator
 from sklearn.metrics import accuracy_score
 
 @click.command()
@@ -67,15 +67,19 @@ def main(device):
 
         # test
         print("testing")
-        predictions = batch_predict(
-            model, features_test, 100,
+        generator = batch_generator(len(features_test), 100)
+        generator = map(lambda batch: dict(features=features_test[batch], labels=labels_test[batch]), generator)
+
+        predictions = model.batch_predict(
+            generator,
             print_fn = lambda batch:
                 print(
-                    accuracy_score(np.argmax(model.predict(features=features_test[batch]), axis=1), labels_test[batch]),
-                    np.mean(np.argmax(model.predict(features=features_test[batch]), axis=1) == labels_test[batch]),
-                    model.score(features=features_test[batch], labels=labels_test[batch])
+                    accuracy_score(np.argmax(model.predict(**batch), axis=1), batch["labels"]),
+                    np.mean(np.argmax(model.predict(**batch), axis=1) == batch["labels"]),
+                    model.score(**batch)
                 )
         )
+        predictions = np.argmax(predictions, axis=1)
         test_score = accuracy_score(predictions, labels_test)
         print("test score: {}".format(test_score))
 
