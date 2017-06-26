@@ -69,6 +69,9 @@ Se utilizo un Stocastic Gradient Descent con los siguente parametros
 * Learning Rate: 0.001
 * Batch Size: 64
 
+###### Data Augmentation
+Durante el entrenamiento las imagenes de cada bache fueron rotadas aleatoriamente un angulo entre `-15` y `15` grados.
+
 ##### Notas
 No se intento optimizar el modelo de ninguna manera, en especial:
 
