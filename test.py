@@ -19,7 +19,7 @@ def main(device):
     print("DEVICE:", device)
 
     # seed: resultados repetibles
-    seed = 34
+    seed = 32
     np.random.seed(seed=seed)
     random.seed(seed)
 
@@ -69,7 +69,12 @@ def main(device):
         print("testing")
         predictions = batch_predict(
             model, features_test, 100,
-            print_fn = lambda batch: print(model.score(features=features_test[batch], labels=labels_test[batch]))
+            print_fn = lambda batch:
+                print(
+                    accuracy_score(np.argmax(model.predict(features=features_test[batch]), axis=1), labels_test[batch]),
+                    np.mean(np.argmax(model.predict(features=features_test[batch]), axis=1) == labels_test[batch]),
+                    model.score(features=features_test[batch], labels=labels_test[batch])
+                )
         )
         test_score = accuracy_score(predictions, labels_test)
         print("test score: {}".format(test_score))

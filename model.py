@@ -40,15 +40,15 @@ class Model(SoftmaxClassifier):
 
         # fire
         net = ti.layers.fire(net, 16, 64, 64, activation=tf.nn.elu, padding='same') #fire2
-        net = net + ti.layers.fire(net, 16, 64, 64, activation=tf.nn.elu, padding='same') #fire3
+        net = ti.layers.fire(net, 16, 64, 64, activation=tf.nn.elu, padding='same') #fire3
         net = ti.layers.fire(net, 32, 128, 128, activation=tf.nn.elu, padding='same') #fire4
 
         # max pooling
         net = tf.layers.max_pooling2d(net, [3, 3], strides=2, padding='same')
 
-        net = net + ti.layers.fire(net, 32, 128, 128, activation=tf.nn.elu, padding='same') #fire5
+        net = ti.layers.fire(net, 32, 128, 128, activation=tf.nn.elu, padding='same') #fire5
         net = ti.layers.fire(net, 48, 192, 192, activation=tf.nn.elu, padding='same') #fire6
-        net = net + ti.layers.fire(net, 48, 192, 192, activation=tf.nn.elu, padding='same') #fire7
+        net = ti.layers.fire(net, 48, 192, 192, activation=tf.nn.elu, padding='same') #fire7
         net = ti.layers.fire(net, 64, 256, 256, activation=tf.nn.elu, padding='same') #fire8
 
         # max pooling

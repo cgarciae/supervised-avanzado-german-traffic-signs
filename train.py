@@ -12,7 +12,7 @@ import utils
 
 @click.command()
 @click.option('--device', '-d', default="/gpu:0", help='Device, default = gpu:0')
-@click.option('--epochs', '-e', default=4000, help='Number of epochs, default = 4000')
+@click.option('--epochs', '-e', default=8000, help='Number of epochs, default = 4000')
 @click.option('--batch-size', '-b', default=64, help='Batch size, default = 64')
 def main(device, epochs, batch_size):
 
