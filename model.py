@@ -12,6 +12,7 @@ class Model(SoftmaxClassifier):
         self._decay_steps = kwargs.pop("decay_steps", 200)
         self._decay_rate = kwargs.pop("decay_rate", 0.96)
         self._staircase = kwargs.pop("staircase", True)
+        self._rotation_angle = kwargs.pop("rotation_angle", 15.0)
 
         super(Model, self).__init__(*args, **kwargs)
 
@@ -32,6 +33,9 @@ class Model(SoftmaxClassifier):
 
         # cast
         net = tf.cast(self.inputs.features, tf.float32, "cast")
+
+        # data augmentation
+        net = self.random_rotate_images(net)
 
         # big kernel
         net = tf.layers.conv2d(net, 96, [7, 7], activation=tf.nn.elu, padding='same')
@@ -70,3 +74,13 @@ class Model(SoftmaxClassifier):
         return [
             tf.summary.scalar("learning_rate", self.learning_rate)
         ]
+
+    def random_rotate_images(self, net):
+        return tf.where(
+            self.inputs.training,
+            tf.contrib.image.rotate(
+                net,
+                tf.random_uniform(tf.shape(net)[:1], minval = -self._rotation_angle, maxval = self._rotation_angle)
+            ),
+            net
+        )

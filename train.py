@@ -8,6 +8,7 @@ import random
 from name import network_name, model_path
 from tfinterface.supervised import SupervisedInputs
 import click
+import utils
 
 @click.command()
 @click.option('--device', '-d', default="/gpu:0", help='Device, default = gpu:0')
@@ -25,6 +26,7 @@ def main(device, epochs, batch_size):
 
     # obtener todas las imagenes (lento)
     data_generator = dataset.training_set.random_batch_arrays_generator(batch_size)
+    # data_generator = utils.batch_random_image_rotation(data_generator, 15.0)
     data_generator = cz.map(Dict(features = P[0], labels = P[1]), data_generator)
 
     graph = tf.Graph()

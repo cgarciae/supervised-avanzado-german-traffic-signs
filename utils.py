@@ -2,18 +2,18 @@ from PIL import Image
 import numpy as np
 from random import random
 
-def rotate_feature(feature, rotation):
-    angle = rotation * (random * 2.0 - 1.0)
+def random_rotate_feature(feature, rotation):
+    angle = rotation * (random() * 2.0 - 1.0)
     im = Image.fromarray(feature).rotate(angle)
 
     return np.asarray(im)
 
 def batch_random_image_rotation(generator, rotation):
 
-    for features, labels in generator():
-
-        features_list = map(rotate_feature, features)
-        features = np.concatenate(features_list, axis=0)
+    for features, labels in generator:
+        
+        features_list = map(lambda feature: random_rotate_feature(feature, rotation), features)
+        features = np.stack(features_list, axis=0)
 
         yield features, labels
 
