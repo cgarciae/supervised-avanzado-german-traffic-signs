@@ -33,9 +33,7 @@ class Model(SoftmaxClassifier):
 
         # cast
         net = tf.cast(self.inputs.features, tf.float32, "cast")
-
-        # data augmentation
-        net = self.random_rotate_images(net)
+        net = tf.layers.batch_normalization(net, training=inputs.training)
 
         # big kernel
         net = tf.layers.conv2d(net, 96, [7, 7], activation=tf.nn.elu, padding='same')
