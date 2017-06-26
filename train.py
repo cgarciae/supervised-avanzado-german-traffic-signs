@@ -26,7 +26,7 @@ def main(device, epochs, batch_size):
 
     # obtener todas las imagenes (lento)
     data_generator = dataset.training_set.random_batch_arrays_generator(batch_size)
-    # data_generator = utils.batch_random_image_rotation(data_generator, 15.0)
+    data_generator = utils.batch_random_image_rotation(data_generator, 15.0)
     data_generator = cz.map(Dict(features = P[0], labels = P[1]), data_generator)
 
     graph = tf.Graph()
