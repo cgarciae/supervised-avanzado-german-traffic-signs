@@ -38,25 +38,17 @@ class Model(SoftmaxClassifier):
         # big kernel
         net = ti.layers.conv2d_batch_norm(net, 96, [7, 7], activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training))
 
-        # fire
-        net = ti.layers.fire_batch_norm(net, 16, 64, 64, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire2
-        net = net + ti.layers.fire_batch_norm(net, 16, 64, 64, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire3
-        net = ti.layers.fire_batch_norm(net, 32, 128, 128, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire4
+        # dense 1
+        # net = ti.layers.conv2d_dense_block(net, 12, 12, bottleneck=48, compression=0.5, activation=tf.nn.elu, padding="same")
+        # net = tf.layers.average_pooling2d(net, [2, 2], strides=2)
 
-        # max pooling
-        net = tf.layers.max_pooling2d(net, [3, 3], strides=2, padding='same')
+        # dense 2
+        net = ti.layers.conv2d_dense_block(net, 12, 20, bottleneck=48, compression=0.5, activation=tf.nn.elu, padding="same")
+        net = tf.layers.average_pooling2d(net, [2, 2], strides=2)
 
-        net = net + ti.layers.fire_batch_norm(net, 32, 128, 128, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire5
-        net = ti.layers.fire_batch_norm(net, 48, 192, 192, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire6
-        net = net + ti.layers.fire_batch_norm(net, 48, 192, 192, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire7
-        net = ti.layers.fire_batch_norm(net, 64, 256, 256, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire8
-
-        # max pooling
-        net = tf.layers.max_pooling2d(net, [3, 3], strides=2, padding='same')
-
-        #fire + droput
-        net = net + ti.layers.fire_batch_norm(net, 64, 256, 256, activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training)) #fire9
-        net = tf.layers.dropout(net, rate=0.25, training=inputs.training)
+        # dense 2
+        net = ti.layers.conv2d_dense_block(net, 12, 20, bottleneck=48, compression=0.5, activation=tf.nn.elu, padding="same")
+        net = tf.layers.average_pooling2d(net, [2, 2], strides=2)
 
         # reduce
         net = ti.layers.conv2d_batch_norm(net, self.n_classes, [1, 1], padding='same', bn_kwargs=dict(training=inputs.training)) #linear

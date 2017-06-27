@@ -5,7 +5,7 @@ from phi.api import *
 from model import Model
 import numpy as np
 import random
-from name import network_name
+from name import network_name, model_path
 from tfinterface.supervised import SupervisedInputs
 import click
 
@@ -21,6 +21,7 @@ def main(device):
         name = network_name + "_inputs",
         graph = graph,
         sess = sess,
+        model_path = model_path + ".count",
         # tensors
         features = dict(shape = (None, 32, 32, 3)),
         labels = dict(shape = (None,), dtype = tf.uint8)
@@ -42,11 +43,16 @@ def main(device):
         inputs = inputs()
         model = template(inputs)
 
+        writer = tf.summary.FileWriter(logdir='logs', graph=graph)
+        writer.flush()
+
     with graph.as_default():
         print("")
         print("##########################################################")
         print("Number of Weights = {:,}".format(model.count_weights()))
         print("##########################################################")
+
+        print(model.predictions)
 
 if __name__ == '__main__':
     main()
