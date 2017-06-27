@@ -10,4 +10,4 @@ floyd run \
   --gpu \
   --env tensorflow:py2 \
   --data $data_output_id:data \
-  "DATAGET_HOME=/data MODEL_PATH=/output python train.py --epochs 6000"
+  "DATAGET_HOME=/data MODEL_PATH=/output python train.py --epochs 8000"

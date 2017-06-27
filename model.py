@@ -31,33 +31,48 @@ class Model(SoftmaxClassifier):
 
     def get_logits(self, inputs):
 
+        print("###############################")
+        print("# Model")
+        print("###############################")
         # cast
-        net = tf.cast(self.inputs.features, tf.float32, "cast")
-        net = tf.layers.batch_normalization(net, training=inputs.training)
+        net = tf.cast(self.inputs.features, tf.float32, "cast"); print("Input: {}".format(net))
+        net = tf.layers.batch_normalization(net, training=inputs.training); print("Batch Norm: {}".format(net))
 
         # big kernel
-        net = ti.layers.conv2d_batch_norm(net, 96, [7, 7], activation=tf.nn.elu, padding='same', bn_kwargs=dict(training=inputs.training))
+        net = ti.layers.conv2d_batch_norm(net, 96, [7, 7], activation=tf.nn.elu, padding='same', batch_norm=dict(training=inputs.training))
+        print("Batch Norm Layer 96, 7x7: {}".format(net))
 
         # dense 1
         # net = ti.layers.conv2d_dense_block(net, 12, 12, bottleneck=48, compression=0.5, activation=tf.nn.elu, padding="same")
         # net = tf.layers.average_pooling2d(net, [2, 2], strides=2)
 
         # dense 2
-        net = ti.layers.conv2d_dense_block(net, 12, 20, bottleneck=48, compression=0.5, activation=tf.nn.elu, padding="same")
-        net = tf.layers.average_pooling2d(net, [2, 2], strides=2)
+        net = ti.layers.conv2d_dense_block(
+            net, 12, 20, bottleneck=48, compression=0.5, activation=tf.nn.elu, padding="same",
+            dropout = dict(rate = 0.2),
+            batch_norm = dict(training = inputs.training)
+        ); print("Dense Block (12, 20): {}".format(net))
+        net = tf.layers.average_pooling2d(net, [2, 2], strides=2); print("Average Pooling 2x2".format(net))
 
         # dense 2
-        net = ti.layers.conv2d_dense_block(net, 12, 20, bottleneck=48, compression=0.5, activation=tf.nn.elu, padding="same")
-        net = tf.layers.average_pooling2d(net, [2, 2], strides=2)
+        net = ti.layers.conv2d_dense_block(
+            net, 12, 20, bottleneck=48, compression=0.5, activation=tf.nn.elu, padding="same",
+            dropout = dict(rate = 0.2),
+            batch_norm = dict(training = inputs.training)
+        ); print("Dense Block (12, 20): {}".format(net))
+        net = tf.layers.average_pooling2d(net, [2, 2], strides=2); print("Average Pooling 2x2".format(net))
 
         # reduce
-        net = ti.layers.conv2d_batch_norm(net, self.n_classes, [1, 1], padding='same', bn_kwargs=dict(training=inputs.training)) #linear
+        net = ti.layers.conv2d_batch_norm(net, self.n_classes, [1, 1], padding='same', batch_norm=dict(training=inputs.training)); print("Batch Norm Layer 43, 1x1: {}".format(net))
         shape = net.get_shape()[1]
-        net = tf.layers.average_pooling2d(net, [shape, shape], strides=1)
+        net = tf.layers.average_pooling2d(net, [shape, shape], strides=1); print("Global Average Pooling: {}".format(net))
 
         # flatten
-        net = tf.contrib.layers.flatten(net)
+        net = tf.contrib.layers.flatten(net); print("Flatten: {}".format(net))
         # output layer
+
+        print("###############################\n")
+
         return net
 
     def get_summaries(self, inputs):
