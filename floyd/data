@@ -1,6 +1,19 @@
 #! /bin/bash
 floyd init german-traffic-signs/data
-floyd run \
+
+run_text=$(floyd run \
   --cpu \
   --env tensorflow:py2 \
-  "DATAGET_HOME=/output dataget get german-traffic-signs"
+  "DATAGET_HOME=/output dataget get german-traffic-signs" \
+  2>&1 > /dev/null
+)
+echo $run_text
+run_id=$(python floyd/get_run_id.py "$run_text")
+echo Run ID: "$run_id"
+
+# get output id
+info_text="$(floyd info $run_id 2>&1 > /dev/null)"
+output_id=$(python floyd/get_output_id.py "${info_text}")
+echo Output ID: $output_id
+
+python floyd/update_ids.py data $run_id $output_id
