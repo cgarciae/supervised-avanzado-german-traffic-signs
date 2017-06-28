@@ -48,7 +48,7 @@ class Model(SoftmaxClassifier):
 
         # dense 2
         net = ti.layers.conv2d_dense_block(
-            net, 12, 20, bottleneck=48, compression=0.5, activation=tf.nn.elu, padding="same",
+            net, 12, 16, bottleneck=48, compression=0.8, activation=tf.nn.elu, padding="same",
             dropout = dict(rate = 0.2),
             batch_norm = dict(training = inputs.training)
         ); print("Dense Block (12, 20): {}".format(net))
@@ -56,20 +56,18 @@ class Model(SoftmaxClassifier):
 
         # dense 2
         net = ti.layers.conv2d_dense_block(
-            net, 12, 20, bottleneck=48, compression=0.5, activation=tf.nn.elu, padding="same",
+            net, 12, 16, bottleneck=48, compression=None, activation=tf.nn.elu, padding="same",
             dropout = dict(rate = 0.2),
             batch_norm = dict(training = inputs.training)
         ); print("Dense Block (12, 20): {}".format(net))
-        net = tf.layers.average_pooling2d(net, [2, 2], strides=2); print("Average Pooling 2x2".format(net))
 
-        # reduce
-        net = ti.layers.conv2d_batch_norm(net, self.n_classes, [1, 1], padding='same', batch_norm=dict(training=inputs.training)); print("Batch Norm Layer 43, 1x1: {}".format(net))
+        # global average pooling
         shape = net.get_shape()[1]
         net = tf.layers.average_pooling2d(net, [shape, shape], strides=1); print("Global Average Pooling: {}".format(net))
-
-        # flatten
         net = tf.contrib.layers.flatten(net); print("Flatten: {}".format(net))
-        # output layer
+
+        # dense
+        net = ti.layers.dense_batch_norm(net, self.n_classes, batch_norm=dict(training=inputs.training)); print("Dense Batch Norm Layer 43: {}".format(net))
 
         print("###############################\n")
 

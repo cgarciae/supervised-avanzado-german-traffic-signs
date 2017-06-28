@@ -6,8 +6,22 @@ network_name=$(python -c "import name; print(name.network_name)")
 floyd init german-traffic-signs/$network_name/train
 
 data_output_id=$(cat floyd/ids.yml | shyaml get-value data.output)
-floyd run \
+
+#run
+run_text=$(floyd run \
   --gpu \
   --env tensorflow:py2 \
   --data $data_output_id:data \
-  "DATAGET_HOME=/data MODEL_PATH=/output python train.py --epochs 8000"
+  "DATAGET_HOME=/data MODEL_PATH=/output python train.py --epochs 8000" \
+  2>&1 > /dev/null
+)
+echo $run_text
+run_id=$(python floyd/get_run_id.py "$run_text")
+echo Run ID: "$run_id"
+
+# get output id
+info_text="$(floyd info $run_id 2>&1 > /dev/null)"
+output_id=$(python floyd/get_output_id.py "${info_text}")
+echo Output ID: $output_id
+
+python floyd/update_ids.py train $run_id $output_id
