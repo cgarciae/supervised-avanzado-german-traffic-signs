@@ -15,6 +15,8 @@ import utils
 @click.option('--epochs', '-e', default=8000, help='Number of epochs, default = 4000')
 @click.option('--batch-size', '-b', default=64, help='Batch size, default = 64')
 def main(device, epochs, batch_size):
+    print("Epochs: {}".format(epochs))
+    print("Batch Size: {}".format(batch_size))
 
     # seed: resultados repetibles
     seed = 32

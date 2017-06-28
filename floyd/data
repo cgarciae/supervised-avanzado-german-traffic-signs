@@ -4,7 +4,7 @@ floyd init german-traffic-signs/data
 run_text=$(floyd run \
   --cpu \
   --env tensorflow:py2 \
-  "DATAGET_HOME=/output dataget get german-traffic-signs" \
+  "DATAGET_HOME=/output dataget get german-traffic-signs $@" \
   2>&1 > /dev/null
 )
 echo $run_text
