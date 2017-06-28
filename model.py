@@ -43,23 +43,19 @@ class Model(SoftmaxClassifier):
         print("Batch Norm Layer 96, 7x7: {}".format(net))
 
         # dense 1
-        # net = ti.layers.conv2d_dense_block(net, 12, 12, bottleneck=48, compression=0.5, activation=tf.nn.elu, padding="same")
-        # net = tf.layers.average_pooling2d(net, [2, 2], strides=2)
-
-        # dense 2
-        net = ti.layers.conv2d_dense_block(
-            net, 12, 16, bottleneck=48, compression=0.8, activation=tf.nn.elu, padding="same",
-            dropout = dict(rate = 0.2),
-            batch_norm = dict(training = inputs.training)
-        ); print("Dense Block (12, 20): {}".format(net))
+        net = ti.layers.conv2d_densefire_block(
+            net, bottleneck=48, growth_rate_1x1=6, growth_rate_3x3=6,
+            n_layers=20, compression=0.8, activation=tf.nn.elu, padding="same",
+            dropout = dict(rate = 0.2), batch_norm = dict(training = inputs.training)
+        ); print("Dense Fire Block (48, 6, 6, 20): {}".format(net))
         net = tf.layers.average_pooling2d(net, [2, 2], strides=2); print("Average Pooling 2x2".format(net))
 
         # dense 2
-        net = ti.layers.conv2d_dense_block(
-            net, 12, 16, bottleneck=48, compression=None, activation=tf.nn.elu, padding="same",
-            dropout = dict(rate = 0.2),
-            batch_norm = dict(training = inputs.training)
-        ); print("Dense Block (12, 20): {}".format(net))
+        net = ti.layers.conv2d_densefire_block(
+            net, bottleneck=48, growth_rate_1x1=6, growth_rate_3x3=6,
+            n_layers=20, compression=None, activation=tf.nn.elu, padding="same",
+            dropout = dict(rate = 0.2), batch_norm = dict(training = inputs.training)
+        ); print("Dense Fire Block (48, 6, 6, 20): {}".format(net))
 
         # global average pooling
         shape = net.get_shape()[1]
