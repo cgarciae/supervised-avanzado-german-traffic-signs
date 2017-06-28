@@ -47,15 +47,16 @@ class Model(SoftmaxClassifier):
             net, 12, 16, bottleneck=48, compression=0.8, activation=tf.nn.elu, padding="same",
             dropout = dict(rate = 0.2),
             batch_norm = dict(training = inputs.training)
-        ); print("Dense Block (12, 20): {}".format(net))
+        ); print("Dense Block (12, 16): {}".format(net))
         net = tf.layers.average_pooling2d(net, [2, 2], strides=2); print("Average Pooling 2x2".format(net))
+
 
         # dense 2
         net = ti.layers.conv2d_dense_block(
             net, 12, 16, bottleneck=48, compression=None, activation=tf.nn.elu, padding="same",
             dropout = dict(rate = 0.2),
             batch_norm = dict(training = inputs.training)
-        ); print("Dense Block (12, 20): {}".format(net))
+        ); print("Dense Block (12, 16): {}".format(net))
 
         # global average pooling
         shape = net.get_shape()[1]
