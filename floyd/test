@@ -7,9 +7,22 @@ floyd init german-traffic-signs/$network_name/test
 data_output_id=$(cat floyd/ids.yml | shyaml get-value data.output)
 model_output_id=$(cat floyd/ids.yml | shyaml get-value train.output)
 
-floyd run \
+
+run_text=$(floyd run \
   --gpu \
   --env tensorflow:py2 \
   --data $data_output_id:data \
   --data $model_output_id:model \
-  "DATAGET_HOME=/data MODEL_PATH=/model python test.py"
+  "DATAGET_HOME=/data MODEL_PATH=/model python test.py $@" \
+  2>&1 > /dev/null
+)
+echo $run_text
+run_id=$(python floyd/get_run_id.py "$run_text")
+echo Run ID: "$run_id"
+
+# get output id
+info_text="$(floyd info $run_id 2>&1 > /dev/null)"
+output_id=$(python floyd/get_output_id.py "${info_text}")
+echo Output ID: $output_id
+
+python floyd/update_ids.py test $run_id $output_id
