@@ -43,10 +43,6 @@ class Model(SoftmaxClassifier):
         print("Batch Norm Layer 96, 7x7: {}".format(net))
 
         # dense 1
-        # net = ti.layers.conv2d_dense_block(net, 12, 12, bottleneck=48, compression=0.5, activation=tf.nn.elu, padding="same")
-        # net = tf.layers.average_pooling2d(net, [2, 2], strides=2)
-
-        # dense 2
         net = ti.layers.conv2d_dense_block(
             net, 12, 16, bottleneck=48, compression=0.8, activation=tf.nn.elu, padding="same",
             dropout = dict(rate = 0.2),
