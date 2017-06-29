@@ -11,7 +11,8 @@ import click
 
 @click.command()
 @click.option('--device', '-d', default="/gpu:0", help='Device, default = gpu:0')
-def main(device):
+@click.option('--log', is_flag=True, help='Log network structure to tensorboard')
+def main(device, log):
 
     graph = tf.Graph()
     sess = tf.Session(graph=graph)
@@ -43,8 +44,10 @@ def main(device):
         inputs = inputs()
         model = template(inputs)
 
-        writer = tf.summary.FileWriter(logdir='logs', graph=graph)
-        writer.flush()
+        if log:
+            print("Writing Logs")
+            writer = tf.summary.FileWriter(logdir='logs', graph=graph)
+            writer.flush()
 
     with graph.as_default():
         print("")

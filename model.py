@@ -15,7 +15,7 @@ class Model(SoftmaxClassifier):
         self._rotation_angle = kwargs.pop("rotation_angle", 15.0)
 
         # model
-        self._activation = kwargs.pop("activation", tf.nn.relu)
+        self._activation = kwargs.pop("activation", tf.nn.elu)
         self._dropout_rate = kwargs.pop("dropout_rate", 0.2)
 
         # densenet
