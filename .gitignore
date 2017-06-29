@@ -1,6 +1,6 @@
 # custom
 .dataget/
-logs
+logs/
 models
 
 # Byte-compiled / optimized / DLL files

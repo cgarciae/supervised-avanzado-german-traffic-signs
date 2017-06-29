@@ -17,3 +17,5 @@ output_id=$(python floyd/get_output_id.py "${info_text}")
 echo Output ID: $output_id
 
 python floyd/update_ids.py data $run_id $output_id
+
+floyd logs -t $run_id
