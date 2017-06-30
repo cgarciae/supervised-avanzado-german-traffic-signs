@@ -9,7 +9,7 @@ class Model(SoftmaxClassifier):
         self.n_classes = n_classes
 
         self._initial_learning_rate = kwargs.pop("initial_learning_rate", 0.001)
-        self._decay_steps = kwargs.pop("decay_steps", 200)
+        self._decay_steps = kwargs.pop("decay_steps", 100)
         self._decay_rate = kwargs.pop("decay_rate", 0.96)
         self._staircase = kwargs.pop("staircase", True)
         self._rotation_angle = kwargs.pop("rotation_angle", 15.0)
