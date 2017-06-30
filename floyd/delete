@@ -1,0 +1,4 @@
+#! /bin/bash
+
+id=$(cat floyd/ids.yml | shyaml get-value $1.run)
+floyd delete -y $id
