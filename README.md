@@ -60,7 +60,7 @@ Se utilizo una Red Neuronal Convolucional con la siguiente arquitectura:
 * Flatten: se convierte a vector de 43 dimensiones
 * Softmax: funcion de activacion softmax directamente sobre flatten
 ###### Parametros
-Este modelo utiliza `854,757` parametros.
+Este modelo utiliza `747,728` parametros.
 
 ##### Entrenamiento
 Se utilizo un Stocastic Gradient Descent con los siguente parametros
@@ -95,7 +95,7 @@ Ver el score del `test-set` ejecuta
 python test.py
 ```
 
-Resultado: **0.978305621536**
+Resultado: **0.98178939034**
 
 
 ### Visualizacion
