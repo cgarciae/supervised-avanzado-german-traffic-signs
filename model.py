@@ -55,8 +55,13 @@ class Model(SoftmaxClassifier):
         net = tf.layers.max_pooling2d(net, [3, 3], strides=2, padding='same')
 
         #fire + droput
-        net = net + ti.layers.fire_batch_norm(net, 64, 256, 256, activation=tf.nn.elu, padding='same', batch_norm=dict(training=inputs.training)) #fire9
-        net = tf.layers.dropout(net, rate=0.25, training=inputs.training)
+        # net = net + ti.layers.fire_batch_norm(net, 64, 256, 256, activation=tf.nn.elu, padding='same', batch_norm=dict(training=inputs.training)) #fire9
+        # net = tf.layers.dropout(net, rate=0.25, training=inputs.training)
+        nets = [ ti.layers.fire_batch_norm(_net, 64, 8, 8, activation=tf.nn.elu, padding='same', batch_norm=dict(training=inputs.training))
+                for _net in range(32) ]
+        nets = ti.layers.ensemble_dropout(nets, rate=0.25, training=inputs.training)
+        net = tf.concat(nets, axis=3)
+
 
         # reduce
         net = ti.layers.conv2d_batch_norm(net, self.n_classes, [1, 1], padding='same', batch_norm=dict(training=inputs.training)) #linear
