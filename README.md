@@ -44,13 +44,13 @@ dataget get --dont-process german-traffic-signs
 Se utilizo una Red Neuronal Convolucional con la siguiente arquitectura:
 
 * Inputs: 3 filtros (RGB)
-* Capa Convolucional BatchNorm: 96 filtros, kernel 7x7, padding 'same', funcion de activacion ELU
-* DenseBlock(growth_rate: 12, depth: 6, bottleneck: 48, compression: 0.5, dropout: 0.2)
-* DenseBlock(growth_rate: 12, depth: 12, bottleneck: 48, compression: 0.5, dropout: 0.2)
+* Conv2DBatchNorm(filtros: 96, kernel: [7, 7], padding: 'same', activation: ELU)
+* DenseBlock(growth_rate: 12, depth: 6, bottleneck: 48, compression: 0.5, dropout: 0.2, activation: ELU)
+* DenseBlock(growth_rate: 12, depth: 12, bottleneck: 48, compression: 0.5, dropout: 0.2, activation: ELU)
 * AveragePooling2D(kernel: [2, 2], strides: 2)
-* DenseBlock(growth_rate: 12, depth: 24, bottleneck: 48, compression: 0.5, dropout: 0.2)
+* DenseBlock(growth_rate: 12, depth: 24, bottleneck: 48, compression: 0.5, dropout: 0.2, activation: ELU)
 * AveragePooling2D(kernel: [2, 2], strides: 2)
-* DenseBlock(growth_rate: 12, depth: 16, bottleneck: 48, compression: 0.5, dropout: 0.2)
+* DenseBlock(growth_rate: 12, depth: 16, bottleneck: 48, compression: 0.5, dropout: 0.2, activation: ELU)
 * GlobalAveragePooling
 * Flatten
 * DenseBatchNormLayer(units: 43, activation: softmax)
