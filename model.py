@@ -59,7 +59,7 @@ class Model(SoftmaxClassifier):
         net = tf.layers.dropout(net, rate=0.25, training=inputs.training)
 
         # reduce
-        net = ti.layers.conv2d_batch_norm(net, self.n_classes, [1, 1], padding='same', batch_norm=dict(training=inputs.training)) #linear
+        net = ti.layers.conv2d_batch_norm(net, self.n_classes, [1, 1], activation=tf.nn.elu, padding='same', batch_norm=dict(training=inputs.training)) #linear
         shape = net.get_shape()[1]
         net = tf.layers.average_pooling2d(net, [shape, shape], strides=1)
 
