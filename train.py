@@ -25,9 +25,12 @@ def main(device, epochs, batch_size):
     dataset = data("german-traffic-signs").get()
 
     # obtener todas las imagenes (lento)
-    data_generator = dataset.training_set.random_batch_arrays_generator(batch_size)
-    data_generator = utils.batch_random_image_rotation(data_generator, 15.0)
-    data_generator = cz.map(Dict(features = P[0], labels = P[1]), data_generator)
+    def data_generator_fn():
+        data_generator = dataset.training_set.random_batch_arrays_generator(batch_size)
+        data_generator = utils.batch_random_image_rotation(data_generator, 15.0)
+        data_generator = cz.map(Dict(features = P[0], labels = P[1]), data_generator)
+
+        return data_generator
 
     graph = tf.Graph()
     sess = tf.Session(graph=graph)
@@ -38,8 +41,11 @@ def main(device, epochs, batch_size):
         graph = graph,
         sess = sess,
         # tensors
-        features = dict(shape = (None, 32, 32, 3)),
-        labels = dict(shape = (None,), dtype = tf.uint8)
+        features = dict(shape = (None, 32, 32, 3), queue = True),
+        labels = dict(shape = (None,), dtype = tf.uint8, queue = True),
+        queue_ops = dict(
+            batch_size = batch_size
+        ),
     )
 
 
@@ -58,24 +64,33 @@ def main(device, epochs, batch_size):
 
     with tf.device(device):
         inputs = inputs()
+        print(inputs.features)
         model = template(inputs)
 
     # initialize variables
     model.initialize()
 
+    # start queue
+    inputs.start_queue(data_generator_fn)
+
     # fit
     print("training")
     model.fit(
-        data_generator = data_generator,
+        # data_generator = data_generator_fn(),
         epochs = epochs,
         log_summaries = True,
         log_interval = 10,
         print_test_info = True,
+        on_train = [dict(
+            when = lambda step, **kwargs: step % 1000 == 0,
+            do = lambda **kwargs: model.save()
+        )]
     )
 
     # save
     print("saving model")
     model.save()
+
 
 if __name__ == '__main__':
     main()
